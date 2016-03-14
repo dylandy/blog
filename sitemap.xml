@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://blog.dylandy.tw/blog/2016/03/14/hello-world/</loc>
+<lastmod>2016-03-14T23:13:07+08:00</lastmod>
+</url>
+<url>
 <loc>http://blog.dylandy.tw/blog/archives/</loc>
 </url>
 <url>
@@ -11,5 +15,8 @@
 </url>
 <url>
 <loc>http://blog.dylandy.tw/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw/blog/categories/talk/</loc>
 </url>
 </urlset>
