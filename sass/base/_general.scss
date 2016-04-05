@@ -137,8 +137,9 @@ h6 {
 }
 
 a {
-    color: #4a4a4a;
+    color: #57A3E8;
     transition: color ease 0.3s;
+    text-decoration: none;
 }
 
 a:hover {
@@ -147,7 +148,7 @@ a:hover {
 
 h1 a, h2 a, h3 a,
 h4 a, h5 a, h6 a {
-    color: #50585D;
+    color: #57A3E8;
 }
 
 
@@ -349,10 +350,12 @@ table.plain {
     color: #fff;
     text-decoration: none;
     transition: none;
+    text-shadow: 1px 1px grey;
 }
 
 .no-rollover:hover {
     color: #fff;
+    text-shadow: 1px 1px grey;
 }
 
 /* ===================================================================
@@ -404,6 +407,7 @@ table.plain {
     font-weight: 300;
     font-family: 'Droid Serif', serif;
     letter-spacing: 0;
+    text-shadow: 1px 1px grey;
 }
 
 /* Every post, on every page, gets this style on its <article> tag */
