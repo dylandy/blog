@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw/atom.xml" rel="self"/>
-  <link href="http://blog.dylandy.tw/"/>
-  <updated>2016-04-05T17:55:57+08:00</updated>
-  <id>http://blog.dylandy.tw/</id>
+  <link href="http://blog.dylandy.tw/blog/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw/blog/"/>
+  <updated>2016-05-16T20:46:02+08:00</updated>
+  <id>http://blog.dylandy.tw/blog/</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
     
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Ruby Web Framework : 觀察與概念]]></title>
-    <link href="http://blog.dylandy.tw/blog/2016/04/06/ruby-web-framework-xue-xi/"/>
+    <title type="html"><![CDATA[Ruby Web Framework <br>觀察與概念]]></title>
+    <link href="http://blog.dylandy.tw/blog/blog/2016/04/06/ruby-web-framework-xue-xi/"/>
     <updated>2016-04-06T00:00:00+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/2016/04/06/ruby-web-framework-xue-xi</id>
+    <id>http://blog.dylandy.tw/blog/blog/2016/04/06/ruby-web-framework-xue-xi</id>
     <content type="html"><![CDATA[<p><br></p>
 
 <h3>緣起</h3>
@@ -61,7 +61,7 @@ Rack is a convenient way to build your Ruby app out of a bunch of thin layers, l
 
 <p>大部分的 framework 都有如以下的結構：</p>
 
-<p><br><img src="http://blog.dylandy.tw/images/tree-structure.png" alt="tree structure" /></p>
+<p><br><img src="http://blog.dylandy.tw/blog/images/tree-structure.png" alt="tree structure" /></p>
 
 <h4>Public 可以放什麼東西呢？</h4>
 
@@ -107,9 +107,9 @@ Rack is a convenient way to build your Ruby app out of a bunch of thin layers, l
   
   <entry>
     <title type="html"><![CDATA[Hello World]]></title>
-    <link href="http://blog.dylandy.tw/blog/2016/03/14/hello-world/"/>
+    <link href="http://blog.dylandy.tw/blog/blog/2016/03/14/hello-world/"/>
     <updated>2016-03-14T23:13:07+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/2016/03/14/hello-world</id>
+    <id>http://blog.dylandy.tw/blog/blog/2016/03/14/hello-world</id>
     <content type="html"><![CDATA[<p>Hello Dylandy here, this is the new blog for me. Maybe somebody use to see my privious blog on <a href="http://dylandychat.blogspot.com">blogger</a> which would probobly not update so far.<br/></p>
 
 <p>This blog will content something about technologies, something around me and maybe some politic thinking about Taiwan as well. <br/></p>
