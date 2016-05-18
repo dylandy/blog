@@ -1,6 +1,7 @@
 ---
 layout: post
-title: "Ruby Web Framework <br>觀察與概念"
+title: "Ruby Web Framework :
+觀察與概念"
 date: 2016-04-06   +0800
 comments: true
 published: true
