@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://blog.dylandy.tw/blog/sitemap.xml 
+Sitemap: http://blog.dylandy.tw/sitemap.xml 
