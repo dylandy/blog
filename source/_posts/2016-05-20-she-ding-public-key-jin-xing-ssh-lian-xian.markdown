@@ -9,7 +9,7 @@ categories: ["Linux","server admin"]
 
 &nbsp;&nbsp;&nbsp;&nbsp;身為一個常常工程師，對於使用 ssh 連線登入遠端主機是家常便飯的事情，但是也常常會因為 ssh port 被一些惡意程式攻擊，導致主機的帳號密碼被猜到，從而被迫換機器或是全機重灌等等的悲劇。
 有些系統工程師為了避免這樣的風險，把 ssh port 從預設的 22 port 搬移到其他的 port 上，希望能夠躲過大部分的機器人掃描，並且要求使用者的密碼要足夠複雜，但是相對於這些方法，使用 public key 來登入 ssh 主機似乎是最安全的作法，首先，足夠長度的 key length 能夠有效防止攻擊者的攻擊，並且以目前的科技與已知的演算法，並沒有有效的方法進行 key 破解，[畢竟 key 的拆解](https://en.wikipedia.org/wiki/Integer_factorization)是一個 [NP-hard 的問題](https://en.wikipedia.org/wiki/NP-hardness)，因此能夠使用 public key 來進行連線登入的話是一個較為安全的連線方法。
-
+<!--more-->
 *  要使用 public key 登入遠端伺服器的第一步，就是先產生 client 端的 public key，可以參考 [Github 的範例文件](https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/)
 <script src="https://gist.github.com/dylandy/56e5ed043d616a892d0e82109910b99b.js"></script>
 這邊建議使用 2048 bit 以上的安全加密，目前現行的商用網站加密層級至少都達到了 2048 bit ，因此，為了安全性考量，4096 bit 是很有必要的。<br>
