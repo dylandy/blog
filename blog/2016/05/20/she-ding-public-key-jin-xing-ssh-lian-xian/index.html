@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<meta charset="utf-8">
-	<title>Dylandy's Murmur</title>
+	<title>設定 public key 進行 SSH 連線 | Dylandy's Murmur</title>
 
 	<meta name="author" content="Dylandy">
 	
@@ -25,36 +25,16 @@
 </head>
 
 
-<body class="home-template">
-  <header id="site-head">
-  <div class="vertical">
-    <div id="site-head-content" class="inner">
-      <h1 class="blog-title"><a class="no-rollover" href="/">Dylandy's Murmur</a></h1>
-      <h2 class="blog-description">maybe some code and some lifestyle</h2>
-    </div>
-  </div>
-</header>
-  <main class="content" role="main">
-    
-
-
-
+<body class="post-template">
+  <main class="content" role="main"><article class="post">
   
-    <article class="post">
-      
-	
-		
-	
 	<header class="post-header">
-		<span class="post-meta">20 May 2016</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/">
-			
-				設定 Public Key 進行 SSH 連線</a>
-		</h2>
+		<a id="blog-logo" href="/">Dylandy's Murmur</a>
 	</header>
-	<section class="post-excerpt">
+	<span class="post-meta">20 May 2016</span>
+	<h1 class="post-title">設定 Public Key 進行 SSH 連線</h1>
+
+	<section class="post-content">
 		<p>&nbsp;&nbsp;&nbsp;&nbsp;身為一個常常工程師，對於使用 ssh 連線登入遠端主機是家常便飯的事情，但是也常常會因為 ssh port 被一些惡意程式攻擊，導致主機的帳號密碼被猜到，從而被迫換機器或是全機重灌等等的悲劇。
 有些系統工程師為了避免這樣的風險，把 ssh port 從預設的 22 port 搬移到其他的 port 上，希望能夠躲過大部分的機器人掃描，並且要求使用者的密碼要足夠複雜，但是相對於這些方法，使用 public key 來登入 ssh 主機似乎是最安全的作法，首先，足夠長度的 key length 能夠有效防止攻擊者的攻擊，並且以目前的科技與已知的演算法，並沒有有效的方法進行 key 破解，<a href="https://en.wikipedia.org/wiki/Integer_factorization">畢竟 key 的拆解</a>是一個 <a href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard 的問題</a>，因此能夠使用 public key 來進行連線登入的話是一個較為安全的連線方法。</p>
 
@@ -105,74 +85,37 @@
 
 	</section>
 
-    </article>
+  <footer class="post-footer">
+  <section class="author">
+    <h4>Dylandy</h4>
+    <p></p>
+  </section>
+  <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=設定 public key 進行 SSH 連線&amp;url=http://blog.dylandy.tw/blog/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.dylandy.tw/blog/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.dylandy.tw/blog/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+    </a>
+  </section>
+</footer>
+  <hr>
+  
+    <div class="share">
+</div>
 
   
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">06 Apr 2016</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2016/04/06/ruby-web-framework-xue-xi/">
-			
-				Ruby Web Framework : 觀察與概念</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<p><br></p>
-
-<h3>緣起</h3>
-
-<p>前前後後寫 Ruby 也寫了一陣子，用習慣了別人寫的套件、別人寫的 framework 以後，慢慢的也對於各種套件撰寫的原理有了些好奇，開始想要自己編寫一些屬於自己的套件和 framework 來了解一些背後的原理與方法，從過年前到最近，花了一點時間來自己摸索怎麼用 Ruby 來寫一個 web framework ，在過程中學到了許多東西，慢慢的從很多方向來思考 framework 需要什麼。
-在這篇裡面我會先將各個模組說明，之後會一個一個來討論。</p>
-
-
-	</section>
-
-    </article>
-
   
-    <article class="post">
-      
-	
-	<header class="post-header">
-		<span class="post-meta">14 Mar 2016</span>
-		<h2 class="post-title">
-			
-			<a href="/blog/2016/03/14/hello-world/">
-			
-				Hello World</a>
-		</h2>
-	</header>
-	<section class="post-excerpt">
-		<p>Hello Dylandy here, this is the new blog for me. Maybe somebody use to see my privious blog on <a href="http://dylandychat.blogspot.com">blogger</a> which would probobly not update so far.<br/></p>
-
-<p>This blog will content something about technologies, something around me and maybe some politic thinking about Taiwan as well. <br/></p>
-
-<p>Hello, 我是迪蘭帝，經過一段時間的醞釀以後，我決定將部落格從原本的 <a href="http://dylandychat.blogspot.com">blogger</a> 搬家到 github page 上了，blogger 雖然提供了許多方便的功能，但是畢竟已經跟不上時代的腳步，
-醜醜的 <a href="https://en.wikipedia.org/wiki/Responsive_web_design">RWD</a> 介面，不容易自訂 style &hellip; 等等的缺陷，所以在最近決定跳槽了。<br/></p>
-
-<p>歡迎來到 Dylandy&rsquo;s Murmur ，翻翻我的技術筆記與聽聽我的一些牢騷，希望能夠為這個枯燥的網路帶來一些有趣的聲音。</p>
-
-	</section>
-
-    </article>
-
-
-<nav class="pagination" role="pagination">
+  <section id="comment">
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
   
-
-  <span class="page-number">
-    Page 1 of 1
-  </span>
-
-  
-</nav>
-
-
-  </main>
+</article></main>
   <footer class="site-footer"><a class="subscribe icon-feed" href="http://blog.dylandy.tw/blog/atom.xml"><span class="tooltip">Subscribe!</span></a>
 
 
@@ -202,7 +145,10 @@
       var disqus_shortname = 'dylandysmurmur';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.dylandy.tw/blog/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/';
+        var disqus_url = 'http://blog.dylandy.tw/blog/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
