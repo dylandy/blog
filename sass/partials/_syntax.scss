@@ -79,10 +79,10 @@ html .gist .gist-file {
   }
 }
 pre {
-  background: $pre-bg;
+  //background: $pre-bg;
   @include border-radius(.4em);
   @extend .mono;
-  border: 1px solid $pre-border;
+  //border: 1px solid $pre-border;
   line-height: 1.45em;
   font-size: 13px;
   margin-bottom: 2.1em;
