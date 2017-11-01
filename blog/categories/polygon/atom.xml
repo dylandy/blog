@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: polygon | Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw//blog/categories/polygon/atom.xml" rel="self"/>
-  <link href="http://blog.dylandy.tw//"/>
-  <updated>2017-11-01T16:54:31+08:00</updated>
-  <id>http://blog.dylandy.tw//</id>
+  <link href="http://blog.dylandy.tw/blog/blog/categories/polygon/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw/blog/"/>
+  <updated>2017-11-01T17:00:26+08:00</updated>
+  <id>http://blog.dylandy.tw/blog/</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[身為一個程式設計師，或許我們可以為台灣的數學教育做點什麼]]></title>
-    <link href="http://blog.dylandy.tw//blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing/"/>
+    <link href="http://blog.dylandy.tw/blog/blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing/"/>
     <updated>2017-02-06T14:27:44+08:00</updated>
-    <id>http://blog.dylandy.tw//blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing</id>
+    <id>http://blog.dylandy.tw/blog/blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing</id>
     <content type="html"><![CDATA[<p>最近在練習 coffeescript 的時候，一直想要寫個小東西來玩玩，昨天晚上在回家的路上一邊騎車一邊想到，未來的世界、未來的教育，或許我們這些程式設計師都有參與的責任，或許編寫一些對於教育有關的程式也會是我往後的一個目標吧。帶著這樣的想法，開始思考著最近在網路上看到的影片</p>
 
 <iframe src="https://embed.ted.com/talks/conrad_wolfram_teaching_kids_real_math_with_computers" width="640" height="360" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
