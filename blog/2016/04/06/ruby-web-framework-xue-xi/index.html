@@ -1,0 +1,215 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8">
+	<title>Ruby Web Framework : 觀察與概念 | Dylandy's Murmur</title>
+
+	<meta name="author" content="Dylandy">
+	
+	<meta name="description" content="Dylandy's blog">
+
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/atom.xml" rel="alternate" title="Dylandy's Murmur" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/tomorrow.min.css" />
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body class="post-template">
+  <main class="content" role="main"><article class="post">
+  
+	<header class="post-header">
+		<a id="blog-logo" href="/">Dylandy's Murmur</a>
+	</header>
+	<span class="post-meta">06 Apr 2016</span>
+	<h1 class="post-title">Ruby Web Framework : 觀察與概念</h1>
+
+	<section class="post-content">
+		<p><br></p>
+
+<h3>緣起</h3>
+
+<p>前前後後寫 Ruby 也寫了一陣子，用習慣了別人寫的套件、別人寫的 framework 以後，慢慢的也對於各種套件撰寫的原理有了些好奇，開始想要自己編寫一些屬於自己的套件和 framework 來了解一些背後的原理與方法，從過年前到最近，花了一點時間來自己摸索怎麼用 Ruby 來寫一個 web framework ，在過程中學到了許多東西，慢慢的從很多方向來思考 framework 需要什麼。
+在這篇裡面我會先將各個模組說明，之後會一個一個來討論。</p>
+
+<!--more-->
+
+
+<h3>觀察</h3>
+
+<p>從以前就不喜歡看一堆的 document 來學東西，我喜歡從自己的發現中學習，高見龍前輩曾經在日本 RubyKaigi 上發表「<a href="http://rubykaigi.org/2013/talk/S41">Code Reading, Learning More about Ruby by Reading Ruby Source Code</a>」，因此我開始觀察不同的 web framework 試試看能不能有什麼發現。</p>
+
+<h4>Web Framework 都有一個 config.ru 檔案？<br> 這是要做什麼的？</h4>
+
+<p>首先呢，先查了一些資料，意外的發現網路上沒有太多關於 config.ru 單獨的說明，但是可以大致上了解， config.ru 是一個 Rack 的設定檔與執行檔，那什麼是 Rack 呢？</p>
+
+<blockquote><p>Rack is a nice Ruby-fied replacement for CGI.<br>
+Rack sits between all the frameworks (Rails, Sinatra, Rulers) and all the app servers (thin, unicorn, Rainbows, mongrel) as an adapter.<br>
+Rack is a convenient way to build your Ruby app out of a bunch of thin layers, like a stack of pancakes. The layers are called middleware. Or pancakes, why not?<br></p>
+
+<p> &mdash; <a href="http://codefol.io/posts/What-is-Rack-A-Primer">What Is Rack? : a Primer</a></p></blockquote>
+
+<p>簡單的說，Rack 就是一個用 Ruby 做的 <a href="https://en.wikipedia.org/wiki/Common_Gateway_Interface">CGI</a> ，它在應用程式和伺服器之間做資料的轉換和處理，可以讓我們用更邏輯的方式來撰寫程式，對於 Ruby framework 的抽象化有很大的幫助，而 config.ru 就是 Rack 的執行點，也可以稱為設定檔，而 config.ru 是用純 Ruby 的語法所寫成，理論上，我們可以把 framework 的所有的東西都寫在 config.ru 裡面，就能執行了。但是，我們不要，也不應該這麼做，對於 Ruby 的程式撰寫，其中最重要的一個目的在於「<a href="https://en.wikipedia.org/wiki/Semantic-oriented_programming">語意化</a>」，用以提升程式<strong>可再利用性</strong>、<strong>可維護性</strong>、<strong>提升開發速度</strong>，為了維持語意化的目的，使用多檔案的架構勢必是不可少的，那，如何區分資料夾呢？</p>
+
+<h4>每個 MVC 架構的程式對資料夾的分配好像都很類似</h4>
+
+<p>以前寫過的各種 MVC 框架的結構感覺上都大同小異，將 Modal , Controller , View 分開來放，將設定檔放在 config 資料夾內，可以讓設定檔和程式的邏輯分開，將 Modal , Controller , View 分開，可以在設計上更加方便，至於什麼是 MVC 架構呢？<br></p>
+
+<blockquote><p>Model–view–controller (MVC) is a software architectural pattern for implementing user interfaces on computers. It divides a given software application into three interconnected parts, so as to separate internal representations of information from the ways that information is presented to or accepted from the user.<br></p>
+
+<ul>
+<li>The model directly manages the data, logic and rules of the application.<br></li>
+<li>A view can be any output representation of information, such as a chart or a diagram. Multiple views of the same information are possible, such as a bar chart for management and a tabular view for accountants.<br></li>
+<li>The third part, the controller, accepts input and converts it to commands for the model or view.
+<br>
+<a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">Wikipedia - Modal View Controller</a></li>
+</ul>
+</blockquote>
+
+<p>大部分的 framework 都有如以下的結構：</p>
+
+<p><br><img src="/images/tree-structure.png" alt="tree structure" /></p>
+
+<h4>Public 可以放什麼東西呢？</h4>
+
+<p>在 Public 資料夾中，一般是放靜態檔案的地方，系統裡的靜態檔案一般可以分成以下的幾種：</p>
+
+<ul>
+<li>asset ( css / JavaScript )</li>
+<li>image</li>
+<li>other format file ( <em>.pdf / </em>.docs / *.xlsx &hellip; )</li>
+</ul>
+
+
+<p>在 Rack server 的機制裡面，這個資料夾的內容可以直接被下載，用以增加頁面加載的速度，不用透過自身 server 的重新 render ( 像是 nodejs 的 pm2 的作法 ) 這樣對於有大量靜態資源的頁面來說，是個較容易省下計算資源和增加連線效率的方法。</p>
+
+<h4>Rakefile 是做什麼的呢？</h4>
+
+<p>Rake 是一個 Ruby 中的任務自訂小工具，我們可以透過在 Rakefile 裡面自己撰寫一些任務，來幫忙我們加速開發與上線的麻煩點，Rakefile 裡面使用到的都是標準的 Ruby 語法，也就是說，我們可以用簡單的幾行 Ruby 就可以進行一些專案上的控制，如：DB migration, install project &hellip;我們之後會討論如何撰寫 Rakefile 的任務。</p>
+
+<h3>簡單總結</h3>
+
+<ul>
+<li>config.ru 是一個 Rack-based 的 framework 主程式</li>
+<li>MVC 框架的基本資料夾格式為：
+
+<ul>
+<li>app/
+
+<ul>
+<li>modal/</li>
+<li>view/</li>
+<li>controller/</li>
+</ul>
+</li>
+<li>public/</li>
+</ul>
+</li>
+<li>Public 是靜態檔案的集散地</li>
+<li>Rakefile 定義了這個程式或 framework 所使用到的一些指令行任務</li>
+</ul>
+
+
+	</section>
+
+  <footer class="post-footer">
+  <section class="author">
+    <h4>Dylandy</h4>
+    <p></p>
+  </section>
+  <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=Ruby Web Framework : 觀察與概念&amp;url=http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+    </a>
+  </section>
+</footer>
+  <hr>
+  
+    <div class="share">
+</div>
+
+  
+  
+  <section id="comment">
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+  
+</article></main>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http://blog.dylandy.tw//atom.xml"><span class="tooltip">Subscribe!</span></a>
+
+
+<div class="inner">
+
+
+
+
+
+
+
+
+
+<section class="copyright">All content copyright <a href="/">Dylandy</a> © 2017 • All rights reserved.</section>
+
+<section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
+
+</div>
+</footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'dylandysmurmur';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi/';
+        var disqus_url = 'http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', "UA-74509063-1"]);
+    _gaq.push(['_setDomainName','dylandy.tw']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>

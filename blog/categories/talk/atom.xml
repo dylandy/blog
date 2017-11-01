@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: talk | Dylandy's Murmur]]></title>
+  <link href="http://blog.dylandy.tw//blog/categories/talk/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw//"/>
+  <updated>2017-02-07T23:52:08+08:00</updated>
+  <id>http://blog.dylandy.tw//</id>
+  <author>
+    <name><![CDATA[Dylandy]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hello World]]></title>
+    <link href="http://blog.dylandy.tw//blog/2016/03/14/hello-world/"/>
+    <updated>2016-03-14T23:13:07+08:00</updated>
+    <id>http://blog.dylandy.tw//blog/2016/03/14/hello-world</id>
+    <content type="html"><![CDATA[<p>Hello Dylandy here, this is the new blog for me. Maybe somebody use to see my privious blog on <a href="http://dylandychat.blogspot.com">blogger</a> which would probobly not update so far.<br/></p>
+
+<p>This blog will content something about technologies, something around me and maybe some politic thinking about Taiwan as well. <br/></p>
+
+<p>Hello, 我是迪蘭帝，經過一段時間的醞釀以後，我決定將部落格從原本的 <a href="http://dylandychat.blogspot.com">blogger</a> 搬家到 github page 上了，blogger 雖然提供了許多方便的功能，但是畢竟已經跟不上時代的腳步，
+醜醜的 <a href="https://en.wikipedia.org/wiki/Responsive_web_design">RWD</a> 介面，不容易自訂 style &hellip; 等等的缺陷，所以在最近決定跳槽了。<br/></p>
+
+<p>歡迎來到 Dylandy&rsquo;s Murmur ，翻翻我的技術筆記與聽聽我的一些牢騷，希望能夠為這個枯燥的網路帶來一些有趣的聲音。</p>
+]]></content>
+  </entry>
+  
+</feed>
