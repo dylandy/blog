@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://blog.dylandy.tw//blog/2017/10/07/tai-zhong-shi-ji-mian-wu-tian-zong/</loc>
+<lastmod>2017-10-07T16:18:42+08:00</lastmod>
+</url>
+<url>
 <loc>http://blog.dylandy.tw//blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing/</loc>
 <lastmod>2017-02-06T14:27:44+08:00</lastmod>
 </url>
@@ -17,16 +21,16 @@
 <lastmod>2016-03-14T23:13:07+08:00</lastmod>
 </url>
 <url>
-<loc>http://blog.dylandy.tw//archives/</loc>
+<loc>http://blog.dylandy.tw//</loc>
 </url>
 <url>
-<loc>http://blog.dylandy.tw//blog/archives/</loc>
+<loc>http://blog.dylandy.tw//archives/</loc>
 </url>
 <url>
 <loc>http://blog.dylandy.tw//blog/</loc>
 </url>
 <url>
-<loc>http://blog.dylandy.tw//</loc>
+<loc>http://blog.dylandy.tw//blog/archives/</loc>
 </url>
 <url>
 <loc>http://blog.dylandy.tw//blog/categories/talk/</loc>
@@ -63,5 +67,14 @@
 </url>
 <url>
 <loc>http://blog.dylandy.tw//blog/categories/fornextgeneration/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw//blog/categories/food/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw//blog/categories/ramen/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw//blog/categories/menyatasou/</loc>
 </url>
 </urlset>
