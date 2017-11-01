@@ -399,6 +399,10 @@ def blog_url(user, project, source_dir)
   url
 end
 
+desc "generate and open previews"
+  task :gen_preview => [:integrate, :generate, :preview] do
+end
+
 desc "list tasks"
 task :list do
   puts "Tasks: #{(Rake::Task.tasks - [Rake::Task[:list]]).join(', ')}"

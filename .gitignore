@@ -13,3 +13,4 @@ vendor
 node_modules
 Gemfile.lock
 *.swp
+.rake_t_cache
