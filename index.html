@@ -108,7 +108,7 @@
 		</h2>
 	</header>
 	<section class="post-excerpt">
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;身為一個常常工程師，對於使用 ssh 連線登入遠端主機是家常便飯的事情，但是也常常會因為 ssh port 被一些惡意程式攻擊，導致主機的帳號密碼被猜到，從而被迫換機器或是全機重灌等等的悲劇。
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;身為一個宅宅工程師，對於使用 ssh 連線登入遠端主機是家常便飯的事情，但是也常常會因為 ssh port 被一些惡意程式攻擊，導致主機的帳號密碼被猜到，從而被迫換機器或是全機重灌等等的悲劇。
 有些系統工程師為了避免這樣的風險，把 ssh port 從預設的 22 port 搬移到其他的 port 上，希望能夠躲過大部分的機器人掃描，並且要求使用者的密碼要足夠複雜，但是相對於這些方法，使用 public key 來登入 ssh 主機似乎是最安全的作法，首先，足夠長度的 key length 能夠有效防止攻擊者的攻擊，並且以目前的科技與已知的演算法，並沒有有效的方法進行 key 破解，<a href="https://en.wikipedia.org/wiki/Integer_factorization">畢竟 key 的拆解</a>是一個 <a href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard 的問題</a>，因此能夠使用 public key 來進行連線登入的話是一個較為安全的連線方法。</p>
 
 
