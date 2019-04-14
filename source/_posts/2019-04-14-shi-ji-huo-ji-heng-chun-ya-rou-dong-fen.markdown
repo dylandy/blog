@@ -12,6 +12,8 @@ categories: ["food", "noodle", "local food"]
 
 推薦給你，恆春夥計鴨肉冬粉。
 
+<!-- more -->
+
 <img src="/images/duck_noodle.jpg" alt="鴨肉冬粉" style="width:100%"><br>
 <img src="/images/lomi.jpg" alt="滷味" style="width:100%"><br>
 <img src="/images/duck_menu.jpg" alt="鴨肉冬粉菜單" style="width:100%">
