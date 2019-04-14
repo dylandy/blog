@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: talk | Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw/blog/blog/categories/talk/atom.xml" rel="self"/>
-  <link href="http://blog.dylandy.tw/blog/"/>
-  <updated>2017-11-02T11:41:06+08:00</updated>
-  <id>http://blog.dylandy.tw/blog/</id>
+  <link href="http://blog.dylandy.tw//blog/categories/talk/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw//"/>
+  <updated>2019-04-14T14:59:50+08:00</updated>
+  <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Hello World]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2016/03/14/hello-world/"/>
+    <link href="http://blog.dylandy.tw//blog/2016/03/14/hello-world/"/>
     <updated>2016-03-14T23:13:07+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2016/03/14/hello-world</id>
+    <id>http://blog.dylandy.tw//blog/2016/03/14/hello-world</id>
     <content type="html"><![CDATA[<p>Hello Dylandy here, this is the new blog for me. Maybe somebody use to see my privious blog on <a href="http://dylandychat.blogspot.com">blogger</a> which would probobly not update so far.<br/></p>
 
 <p>This blog will content something about technologies, something around me and maybe some politic thinking about Taiwan as well. <br/></p>
