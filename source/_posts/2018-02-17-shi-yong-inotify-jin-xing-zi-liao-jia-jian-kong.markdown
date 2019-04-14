@@ -4,7 +4,6 @@ title: "使用 inotify 進行資料夾監控"
 date: 2018-06-23 14:04:20 +0800
 comments: true
 categories: ["inotify", "ruby", "linux", "file-monitoring", "shellscript"]
-published: false
 ---
 
 在撰寫系統時，要監視一個資料夾的變化情形，我們常會寫一個小程式跑一個無限迴圈，隨時監視目標資料夾的狀態，但是這樣的程式不僅浪費系統資源，佔用珍貴的 CPU 時間、對於硬碟 IO 的使用率提昇，也會因為這個程式佔用有限的硬碟頻寬，下面是一個使用無限迴圈實作的簡單資料夾監視程式。
