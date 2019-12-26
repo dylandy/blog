@@ -4,7 +4,6 @@ title: "將你的程式 Daemon 化"
 date: 2017-12-18 21:21:00 +0800
 comments: true
 categories: ["ruby", "linux", "tutorial"]
-published: false
 ---
 
 實務上我們常常會希望可以在離開 terminal 的狀況下，程式仍舊持續得執行，有些比較小、比較不需要在意系統資源耗費的程式，我們常可以看到用一些奇怪的手法來達到類似的效果，像是使用 screen 或是 tmux 來將程式跑在背景中，這樣下次登入的時候程式仍舊能夠可以被叫出來，雖然看似方便，但是仍然存在許多問題，例如 tmux 和 screen 所需的記憶體不少，且我們的程式相依於 screen 或 tmux ，當 screen 或 tmux 有任何不可預期的狀況 process 被 kill 掉了的話，我們的程式也會被連帶的受到波及，因此完全獨立的背景執行勢必是需要我們追尋的目標，以下是最近工作上簡單 survey 後的一些有關於如何 Daemon 化程式進行簡單的整理。
@@ -53,11 +52,74 @@ Process.setsid
 
 為了了解上面三件事情，我們需要從 Linux 系統更深的方向理解起。
 
-## Process Groups and Session Groups
+## Process Groups 與 Session Groups
 
+Process groups 和 session groups 皆是用於行程控制的，在這邊「行程控制」意味著終端機控制程式的方法。 
+我們從 process groups 開始討論起吧。
 
+每個程式皆屬於一個程式群組，而這個程式群組皆是由一群互相有關聯的程式所組成的，我們稱為父程式與子程式，子程式的生命週期會與父程式的生命週期互相連動，但父程式卻不受制於子程式的生命週期。一般來說，系統會指定一個隨機的 id 給這個程式群組，但是我們也可以透過下面的這個指令來指定群組的 id。
+
+```ruby
+Process.setpgrp(new_group_id)
+```
+
+如果我們將下面的這段程式輸入至 `irb` 我們可以發現他們的值是相同的，一般來說，Process group 的 id 會和這個 process group 的最主要的父程式的 pid 相同。打個比方，如果我們在終端機下執行了 `irb`，那麼 `irb` 的 process group id 應該會與終端機的 pid 相同，因為 `irb` 是屬於終端機的子程式。
+
+```ruby
+puts Process.getpgrp
+puts Process.pid
+```
+
+如果我們看下面這段程式，雖然子程式有自己的 pid ，但是因為子程式與父程式皆屬於相同的 process group ，所以他們的 process group id 是相同的。
+
+```ruby
+puts Process.pid
+puts Process.getpgrp
+
+fork {
+  puts Process.pidputs Process.getpgrp
+}
+```
+從這邊我們可以往回看到前面所說的孤兒程式。我們透過將一個程式的父程式從終端機（因為我們從終端機中將其開啟），設定為系統（pid 為 1），這樣，在終端機關閉的狀況下，孤兒程式仍舊會繼續執行，不會受到終端機的生命週期所影響他的存在。
+
+然後是 session group。
+
+Session group 是更高一層的抽象概念，每個 session group 中會含有非常多個 process group。一個使用者登入至系統後，系統會新增一個 session 給此使用者，這個使用者在這個 session 的過程中所產生的程式皆會屬於這個 session，因此一個 session group 中會含有許多不同的 process group。我們看看以下這個指令。
+
+```sh
+git log | grep shipped | less
+```
+這些指令都各自為不同的 process group 但是，因為他們是由不同的 process 所產生的 child process，但是一個簡單的 Ctrl-C 就可以將他們通通關閉，這是因為他們皆屬於同一個 session group，當我們開啟一個新的 shell 的時候，這個動作將會啟動一個新的 session group，亦即，在這個 shell 裡面所做的行為都屬於同一個 session group，而對於大部分的程式而言 session group 會與終端機連通，但，有些卻不會，那就是 daemon。
+
+你的終端機在管理 session group 上面使用了一個蠻有趣的方法：將指令傳至 session leader，而 session leader 會將此指令廣播至此 session 中的所有 proccess group，當需要被執行的程式收到此指令，程式即執行此指令。
+
+在 Linux 上有一個 [system call](http://shell-storm.org/shellcode/files/syscalls.html) 可以取得目前的 session group id - [`getsid(2)`](http://man7.org/linux/man-pages/man2/getsid.2.html)，但是在 [Ruby 2.0 前的核心 library](https://ruby-doc.org/core-1.9.3/Process/Sys.html) 裡面沒有實作這個介面，如果你真的想要對 session group id 進行管理，可以用 `Process.setsid` 來產生一個新的 session group 並將其 id 存下來，留著往後使用。
+
+讓我們回到前述的 Rack 範例，第一行是新增一個子程式並關閉父程式，終端機發現其與父程式間的連結斷裂了，所以將控制權還給使用者，但此時被新增的子程式仍舊與繼承著父程式的 process groud id 與 session id，因此，在此時這個子程式並不是這些 process group 與 session group 的 leader，因此，雖然終端機將控制權交還給使用者，我們執行在背景的子程式仍舊與目前的終端機有著一絲一縷的關聯，如果此時終端機所在的 session 被中斷了，或是有人傳訊息給終端機要求關閉我們可憐的子程式，這個子程式也又只能被迫關閉，因此，我們希望完全與終端機斬斷連結，才能完整地成為一個 daemon。
+
+透過執行 `Process.setsid` ，我們能夠將目前的子程式設定為一個新的 process group 與 session group 的 leader，但是需要特別注意的是：如果這個指令被執行的對象目前已經是 process group 的 leader 就會失敗，因此，要確定對象是子程式才能被正確執行，同時，由於我們產生了一個新的 session group，理論上它應該要被指定一個終端機來給使用者互動，雖然在這邊顯然的並沒有，但為了避免不必要的錯誤，我們仍舊將其離開，以確保其完全的與終端機分離，除了系統，其他人不能隨便將其關閉，換句話說，它現在自由了，沒有人可以管它了。
+
+```ruby
+exit if fork
+```
+之後，Rack 將目前的工作目錄切換至系統根目錄，這步驟並不是必要的，但是就如同上面的將終端機關閉一樣，這是一個保險，避免程式因為工作目錄消失而被關閉的窘境發生。
+```ruby
+Dir.chdir "/"
+```
+在避免了因為工作目錄消失而被關閉的情形，我們需要考慮另外一個問題 -- 輸出，不論是正確的 stdout 或是錯誤的輸出 stderr 都需要被忽略，因此我們將這些串流資訊導引至 `/dev/null`，你可能會問說，奇怪，那我們怎麼不能直接將它的輸出直接關閉？因為我們不曉得這個程式是否需要存在著標準輸入輸出而能夠正常執行，說不定哪天，因為我們將它關閉而造成後續的執行問題是不容易找到的，因此將其轉到 `/dev/null` 其他軟體需要這些資訊的時候，可以自由導出，不會受到影響。
+
+```ruby
+STDIN.reopen "/dev/null"
+STDOUT.reopen "/dev/null", "a"
+STDERR.reopen "/dev/null", "a"
+```
+
+以上，就是從 Ruby 的角度來看如何將一個程式 daemon 化的簡單概念。
+希望能夠幫助到有需要的人。
 
 ## Reference
 1. Daemon Processes in Ruby, https://www.jstorimer.com/blogs/workingwithcode/7766093-daemon-processes-in-ruby
 1. 程序管理與 SELinux 初探, http://linux.vbird.org/linux_basic/0440processcontrol.php 
-
+1. Linux System Call Table, http://shell-storm.org/shellcode/files/syscalls.html
+1. Ruby Core 1.9 Library, https://ruby-doc.org/core-1.9.3/
+1. Ruby Core 2.6.5 Library, https://ruby-doc.org/core-2.6.5/
