@@ -1,0 +1,295 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8">
+	<title>將你的程式 Daemon 化 | Dylandy's Murmur</title>
+
+	<meta name="author" content="Dylandy">
+	
+	<meta name="description" content="Dylandy's blog">
+
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/atom.xml" rel="alternate" title="Dylandy's Murmur" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/tomorrow.min.css" />
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body class="post-template">
+  <main class="content" role="main"><article class="post">
+  
+	<header class="post-header">
+		<a id="blog-logo" href="/">Dylandy's Murmur</a>
+	</header>
+	<span class="post-meta">18 Dec 2017</span>
+	<h1 class="post-title">將你的程式 Daemon 化</h1>
+
+	<section class="post-content">
+		<p>實務上我們常常會希望可以在離開 terminal 的狀況下，程式仍舊持續得執行，有些比較小、比較不需要在意系統資源耗費的程式，我們常可以看到用一些奇怪的手法來達到類似的效果，像是使用 screen 或是 tmux 來將程式跑在背景中，這樣下次登入的時候程式仍舊能夠可以被叫出來，雖然看似方便，但是仍然存在許多問題，例如 tmux 和 screen 所需的記憶體不少，且我們的程式相依於 screen 或 tmux ，當 screen 或 tmux 有任何不可預期的狀況 process 被 kill 掉了的話，我們的程式也會被連帶的受到波及，因此完全獨立的背景執行勢必是需要我們追尋的目標，以下是最近工作上簡單 survey 後的一些有關於如何 Daemon 化程式進行簡單的整理。</p>
+
+<p>本文章主要知識來源於 <a href="https://www.jstorimer.com/blogs/workingwithcode/7766093-daemon-processes-in-ruby">Daemon Processes in Ruby</a> 的教導，希望能夠用較易理解的文字呈現出來。在寫 Daemon 之前，讓我們回頭看看一個知名的 daemonize web server 程式 <a href="https://github.com/rack/rack">rack</a>。我們來看看他將目標 web server daemon 化的程式碼片段，讓我們透過這個程式碼片段來看看是否能夠從中學到如何 daemon 一支程式。</p>
+
+<!-- more -->
+
+
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">def</span> <span class="nf">daemonize_app</span>
+</span><span class='line'>  <span class="k">if</span> <span class="no">RUBY_VERSION</span> <span class="o">&lt;</span> <span class="s2">&quot;1.9&quot;</span>
+</span><span class='line'>    <span class="nb">exit</span> <span class="k">if</span> <span class="nb">fork</span>
+</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
+</span><span class='line'>    <span class="nb">exit</span> <span class="k">if</span> <span class="nb">fork</span>
+</span><span class='line'>    <span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span> <span class="s2">&quot;/&quot;</span>
+</span><span class='line'>    <span class="no">STDIN</span><span class="o">.</span><span class="n">reopen</span> <span class="s2">&quot;/dev/null&quot;</span>
+</span><span class='line'>    <span class="no">STDOUT</span><span class="o">.</span><span class="n">reopen</span> <span class="s2">&quot;/dev/null&quot;</span> <span class="p">,</span> <span class="s2">&quot;a&quot;</span>
+</span><span class='line'>    <span class="no">STDERR</span><span class="o">.</span><span class="n">reopen</span> <span class="s2">&quot;/dev/null&quot;</span> <span class="p">,</span> <span class="s2">&quot;a&quot;</span>
+</span><span class='line'>  <span class="k">else</span>
+</span><span class='line'>    <span class="no">Process</span><span class="o">.</span><span class="n">daemon</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>我們可以從 else 片段開始看一下，在 ruby 1.9 以後提供了一個 <code>Process.daemon</code> 的 method 來 daemon 化目前的程式，或許有些人會覺得，「嘖！又是一個 Ruby的黑魔法，什麼功能都要包裝在抽象的黑盒子裡面。」，如果你有興趣了解 <code>Process daemon</code> 是如何實作的話，這邊是 <a href="https://github.com/ruby/ruby/blob/c852d76f46a68e28200f0c3f68c8c67879e79c86/process.c#L4817-4860">Ruby MRI 的 C code</a> 可以研究一下，在跳下去研究了一番之後，你會發現其實這段 C code 做的事情跟上面這個 if 片段做的事情本質上是一模一樣的。</p>
+
+<p>ok 那我們來逐一了解一下這個程式碼片段到底做了些什麼。</p>
+
+<h2>Daemonize Process</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">exit</span> <span class="k">if</span> <span class="nb">fork</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這行 code 巧妙的運用了 fork 的特性：他會 return 兩次，一次是在父程式 (parent process) 回應子程式 (child process) 的 pid，而在子程式的部分回應 nil，因此我們可以知道在父程式的時候 fork 會是 true 而子程式會是 false ，因此父程式會被關閉，而子程式會被保留，變成孤兒程式，那麼問題來了，一個孤兒程式，既然他的父程式已經被砍掉了，那他的 ppid (parent process id) 會是多少呢？答案是 1 ，所有的孤兒程式都會被系統核心接管，而因為被系統核心接管著，我們可以保證他的生命週期是與系統核心綁在一起了，不會因為其他的程式因素而造成此程式無故的終止。</p>
+
+<p>這個步驟可以讓 terminal 認為程式已經被終止了，父程式是使用者執行的程式，子程式為變成孤兒的準 daemon ，因此控制權從程式身上交還給使用者，然後執行到下面這一行：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Process</span><span class="o">.</span><span class="n">setsid</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>執行 <code>Process.setsid</code> 會進行以下三件事情：</p>
+
+<ul>
+<li>系統新增一個新的 session 並目前的程式指定為新 session 的 leader</li>
+<li>系統新增一個新的 process group 並指定目前程式為新 process group 的 group leader</li>
+<li>因為此程式與 terminal 本身處於不同的 process group ，因此此程式對於 terminal 沒有控制能力</li>
+</ul>
+
+
+<p>為了了解上面三件事情，我們需要從 Linux 系統更深的方向理解起。</p>
+
+<h2>Process Groups 與 Session Groups</h2>
+
+<p>Process groups 和 session groups 皆是用於行程控制的，在這邊「行程控制」意味著終端機控制程式的方法。
+我們從 process groups 開始討論起吧。</p>
+
+<p>每個程式皆屬於一個程式群組，而這個程式群組皆是由一群互相有關聯的程式所組成的，我們稱為父程式與子程式，子程式的生命週期會與父程式的生命週期互相連動，但父程式卻不受制於子程式的生命週期。一般來說，系統會指定一個隨機的 id 給這個程式群組，但是我們也可以透過下面的這個指令來指定群組的 id。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Process</span><span class="o">.</span><span class="n">setpgrp</span><span class="p">(</span><span class="n">new_group_id</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果我們將下面的這段程式輸入至 <code>irb</code> 我們可以發現他們的值是相同的，一般來說，Process group 的 id 會和這個 process group 的最主要的父程式的 pid 相同。打個比方，如果我們在終端機下執行了 <code>irb</code>，那麼 <code>irb</code> 的 process group id 應該會與終端機的 pid 相同，因為 <code>irb</code> 是屬於終端機的子程式。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Process</span><span class="o">.</span><span class="n">getpgrp</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">Process</span><span class="o">.</span><span class="n">pid</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果我們看下面這段程式，雖然子程式有自己的 pid ，但是因為子程式與父程式皆屬於相同的 process group ，所以他們的 process group id 是相同的。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">puts</span> <span class="no">Process</span><span class="o">.</span><span class="n">pid</span>
+</span><span class='line'><span class="nb">puts</span> <span class="no">Process</span><span class="o">.</span><span class="n">getpgrp</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">fork</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nb">puts</span> <span class="no">Process</span><span class="o">.</span><span class="n">pidputs</span> <span class="no">Process</span><span class="o">.</span><span class="n">getpgrp</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>從這邊我們可以往回看到前面所說的孤兒程式。我們透過將一個程式的父程式從終端機（因為我們從終端機中將其開啟），設定為系統（pid 為 1），這樣，在終端機關閉的狀況下，孤兒程式仍舊會繼續執行，不會受到終端機的生命週期所影響他的存在。</p>
+
+<p>然後是 session group。</p>
+
+<p>Session group 是更高一層的抽象概念，每個 session group 中會含有非常多個 process group。一個使用者登入至系統後，系統會新增一個 session 給此使用者，這個使用者在這個 session 的過程中所產生的程式皆會屬於這個 session，因此一個 session group 中會含有許多不同的 process group。我們看看以下這個指令。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>git log <span class="p">|</span> grep shipped <span class="p">|</span> less
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這些指令都各自為不同的 process group 但是，因為他們是由不同的 process 所產生的 child process，但是一個簡單的 Ctrl-C 就可以將他們通通關閉，這是因為他們皆屬於同一個 session group，當我們開啟一個新的 shell 的時候，這個動作將會啟動一個新的 session group，亦即，在這個 shell 裡面所做的行為都屬於同一個 session group，而對於大部分的程式而言 session group 會與終端機連通，但，有些卻不會，那就是 daemon。</p>
+
+<p>你的終端機在管理 session group 上面使用了一個蠻有趣的方法：將指令傳至 session leader，而 session leader 會將此指令廣播至此 session 中的所有 proccess group，當需要被執行的程式收到此指令，程式即執行此指令。</p>
+
+<p>在 Linux 上有一個 <a href="http://shell-storm.org/shellcode/files/syscalls.html">system call</a> 可以取得目前的 session group id - <a href="http://man7.org/linux/man-pages/man2/getsid.2.html"><code>getsid(2)</code></a>，但是在 <a href="https://ruby-doc.org/core-1.9.3/Process/Sys.html">Ruby 2.0 前的核心 library</a> 裡面沒有實作這個介面，如果你真的想要對 session group id 進行管理，可以用 <code>Process.setsid</code> 來產生一個新的 session group 並將其 id 存下來，留著往後使用。</p>
+
+<p>讓我們回到前述的 Rack 範例，第一行是新增一個子程式並關閉父程式，終端機發現其與父程式間的連結斷裂了，所以將控制權還給使用者，但此時被新增的子程式仍舊與繼承著父程式的 process groud id 與 session id，因此，在此時這個子程式並不是這些 process group 與 session group 的 leader，因此，雖然終端機將控制權交還給使用者，我們執行在背景的子程式仍舊與目前的終端機有著一絲一縷的關聯，如果此時終端機所在的 session 被中斷了，或是有人傳訊息給終端機要求關閉我們可憐的子程式，這個子程式也又只能被迫關閉，因此，我們希望完全與終端機斬斷連結，才能完整地成為一個 daemon。</p>
+
+<p>透過執行 <code>Process.setsid</code> ，我們能夠將目前的子程式設定為一個新的 process group 與 session group 的 leader，但是需要特別注意的是：如果這個指令被執行的對象目前已經是 process group 的 leader 就會失敗，因此，要確定對象是子程式才能被正確執行，同時，由於我們產生了一個新的 session group，理論上它應該要被指定一個終端機來給使用者互動，雖然在這邊顯然的並沒有，但為了避免不必要的錯誤，我們仍舊將其離開，以確保其完全的與終端機分離，除了系統，其他人不能隨便將其關閉，換句話說，它現在自由了，沒有人可以管它了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">exit</span> <span class="k">if</span> <span class="nb">fork</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>之後，Rack 將目前的工作目錄切換至系統根目錄，這步驟並不是必要的，但是就如同上面的將終端機關閉一樣，這是一個保險，避免程式因為工作目錄消失而被關閉的窘境發生。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Dir</span><span class="o">.</span><span class="n">chdir</span> <span class="s2">&quot;/&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在避免了因為工作目錄消失而被關閉的情形，我們需要考慮另外一個問題 &ndash; 輸出，不論是正確的 stdout 或是錯誤的輸出 stderr 都需要被忽略，因此我們將這些串流資訊導引至 <code>/dev/null</code>，你可能會問說，奇怪，那我們怎麼不能直接將它的輸出直接關閉？因為我們不曉得這個程式是否需要存在著標準輸入輸出而能夠正常執行，說不定哪天，因為我們將它關閉而造成後續的執行問題是不容易找到的，因此將其轉到 <code>/dev/null</code> 其他軟體需要這些資訊的時候，可以自由導出，不會受到影響。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">STDIN</span><span class="o">.</span><span class="n">reopen</span> <span class="s2">&quot;/dev/null&quot;</span>
+</span><span class='line'><span class="no">STDOUT</span><span class="o">.</span><span class="n">reopen</span> <span class="s2">&quot;/dev/null&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span>
+</span><span class='line'><span class="no">STDERR</span><span class="o">.</span><span class="n">reopen</span> <span class="s2">&quot;/dev/null&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上，就是從 Ruby 的角度來看如何將一個程式 daemon 化的簡單概念。
+希望能夠幫助到有需要的人。</p>
+
+<h2>Reference</h2>
+
+<ol>
+<li>Daemon Processes in Ruby, <a href="https://www.jstorimer.com/blogs/workingwithcode/7766093-daemon-processes-in-ruby">https://www.jstorimer.com/blogs/workingwithcode/7766093-daemon-processes-in-ruby</a></li>
+<li>程序管理與 SELinux 初探, <a href="http://linux.vbird.org/linux_basic/0440processcontrol.php">http://linux.vbird.org/linux_basic/0440processcontrol.php</a></li>
+<li>Linux System Call Table, <a href="http://shell-storm.org/shellcode/files/syscalls.html">http://shell-storm.org/shellcode/files/syscalls.html</a></li>
+<li>Ruby Core 1.9 Library, <a href="https://ruby-doc.org/core-1.9.3/">https://ruby-doc.org/core-1.9.3/</a></li>
+<li>Ruby Core 2.6.5 Library, <a href="https://ruby-doc.org/core-2.6.5/">https://ruby-doc.org/core-2.6.5/</a></li>
+</ol>
+
+
+	</section>
+
+  <footer class="post-footer">
+  <section class="author">
+    <h4>Dylandy</h4>
+    <p></p>
+  </section>
+  <section class="share">
+    <h4>Share this post</h4>
+    <a class="icon-twitter" href="http://twitter.com/share?text=將你的程式 Daemon 化&amp;url=http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+      <span class="hidden">Twitter</span>
+    </a>
+    <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+      <span class="hidden">Facebook</span>
+    </a>
+    <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/" onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+      <span class="hidden">Google+</span>
+    </a>
+  </section>
+</footer>
+  <hr>
+  
+    <div class="share">
+</div>
+
+  
+  
+  <section id="comment">
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+  
+</article></main>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http://blog.dylandy.tw//atom.xml"><span class="tooltip">Subscribe!</span></a>
+
+
+<div class="inner">
+
+
+
+
+
+
+
+
+
+<section class="copyright">All content copyright <a href="/">Dylandy</a> © 2019 • All rights reserved.</section>
+
+<section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
+
+</div>
+</footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'dylandysmurmur';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/';
+        var disqus_url = 'http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', "UA-74509063-1"]);
+    _gaq.push(['_setDomainName','dylandy.tw']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>
