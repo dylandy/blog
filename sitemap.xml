@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://blog.dylandy.tw//blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni/</loc>
+<lastmod>2019-12-27T13:37:22+08:00</lastmod>
+</url>
+<url>
 <loc>http://blog.dylandy.tw//blog/2019/04/14/shi-ji-huo-ji-heng-chun-ya-rou-dong-fen/</loc>
 <lastmod>2019-04-14T14:47:38+08:00</lastmod>
 </url>
@@ -106,5 +110,14 @@
 </url>
 <url>
 <loc>http://blog.dylandy.tw//blog/categories/local-food/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw//blog/categories/release/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw//blog/categories/new-feature/</loc>
+</url>
+<url>
+<loc>http://blog.dylandy.tw//blog/categories/future/</loc>
 </url>
 </urlset>
