@@ -21,6 +21,8 @@ Ruby 2.7 的新功能列表
 1. [Keyword Argument](#keyword-argument)
 
 
+<!-- more -->
+
 根據 Matz 的說法，本次的版本為最後的 2.x 版本，下個版本將會直接跳到從 2016 開始大家就在引頸期盼的 [Ruby 3.0](https://blog.heroku.com/ruby-3-by-3)！
 
 下面是 Matz 在 RubyConf 2019 上針對 Ruby 2.7 的說明。
