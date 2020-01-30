@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: javascript | Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw//blog/categories/javascript/atom.xml" rel="self"/>
+  <title><![CDATA[Category: canvas | Dylandy's Murmur]]></title>
+  <link href="http://blog.dylandy.tw//blog/categories/canvas/atom.xml" rel="self"/>
   <link href="http://blog.dylandy.tw//"/>
   <updated>2020-01-30T23:46:41+08:00</updated>
   <id>http://blog.dylandy.tw//</id>
@@ -113,32 +113,6 @@
 
 <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">input</span><span class="p">[</span><span class="nx">name</span><span class="o">=</span><span class="nx">upload</span><span class="o">-</span><span class="nx">image</span><span class="p">]</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
 <span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">change</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">ReadAndCompress</span><span class="p">(</span><span class="nx">event</span><span class="p">));</span></code></pre></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[身為一個程式設計師，或許我們可以為台灣的數學教育做點什麼]]></title>
-    <link href="http://blog.dylandy.tw//blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing/"/>
-    <updated>2017-02-06T14:27:44+08:00</updated>
-    <id>http://blog.dylandy.tw//blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing</id>
-    <content type="html"><![CDATA[<p>最近在練習 coffeescript 的時候，一直想要寫個小東西來玩玩，昨天晚上在回家的路上一邊騎車一邊想到，未來的世界、未來的教育，或許我們這些程式設計師都有參與的責任，或許編寫一些對於教育有關的程式也會是我往後的一個目標吧。帶著這樣的想法，開始思考著最近在網路上看到的影片</p>
-
-<iframe src="https://embed.ted.com/talks/conrad_wolfram_teaching_kids_real_math_with_computers" width="640" height="360" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
-
-<p>現在已經是資訊化的時代了，過去我們苦心積慮的想要讓孩子們學好算數，可以用紙筆進行高難度的運算，但是這些運算，在電腦普及、智慧型手機人手一支的現代，或許值得我們重新思考，我們學習數學運算的目的是什麼呢？這些能力能夠讓我們在數學成就上面得到什麼發展嗎？是不是這些能力讓我們在過往的學習路途上扼殺了許多可能的數學天才呢？我們是不是又因為一個人有著不錯的數學計算能力，就理所當然的認為他有數學天份呢？這些問題應該是進入了資訊化社會以後的我們，不論是不是老師，我想我們都應該問自己這樣的問題。我們能不能改變什麼，透過這些我們已經身在其中的機器，幫助我們運算，是不是能夠幫助我們學習數學的過程中，能夠學習得更透撤，更有系統呢？</p>
-
-<!-- more -->
-
-
-<p>在影片中， Conrad Wolfram 示範了一個多邊形的範例，這個範例可以讓年紀很小的小朋友都可以很容易了解極限的概念。我試著把這個小玩具製作出來，透過這個小玩具不僅可以讓自己瞭解 coffeescript 的撰寫，也希望自己可以為台灣的數學教育做出一點貢獻，身為一個有能力可以編寫程式來為我們的下一代貢獻的人，我覺得沒有什麼比這更有意義的事了。</p>
-
-<p>專案頁面：<br>
-<a href="https://github.com/dylandy/polygenJS">https://github.com/dylandy/polygenJS</a></p>
-
-<p>這是一個 jQuery plugin ，你只要把 polygen.js 引入到你的頁面中，你就可以輕易的帶入你想要的參數畫出你想要的圖形。</p>
-
-<p><img src="/images/template.png" alt="template diagram" /></p>
 ]]></content>
   </entry>
   

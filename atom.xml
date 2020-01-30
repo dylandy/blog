@@ -4,7 +4,7 @@
   <title><![CDATA[Dylandy's Murmur]]></title>
   <link href="http://blog.dylandy.tw//atom.xml" rel="self"/>
   <link href="http://blog.dylandy.tw//"/>
-  <updated>2019-12-27T16:57:51+08:00</updated>
+  <updated>2020-01-30T23:46:41+08:00</updated>
   <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[利用 canvas 進行前端圖片壓縮]]></title>
+    <link href="http://blog.dylandy.tw//blog/2020/01/17/li-yong-canvas-jin-xing-qian-duan-tu-pian-ya-suo/"/>
+    <updated>2020-01-17T22:24:19+08:00</updated>
+    <id>http://blog.dylandy.tw//blog/2020/01/17/li-yong-canvas-jin-xing-qian-duan-tu-pian-ya-suo</id>
+    <content type="html"><![CDATA[<p>最近工作上剛好遇到一個需要調校效能的站，在過程中我們運用了許多不同的方法將整體的營運效能往上大幅度的提升，在未來幾篇文章我會討論有關如何提升前端效能的方法，雖然都有些老生常談，但是希望可以給初學者一些方向，當網站效能需要最佳化時可以想到這些方法。</p>
+
+<p>許多人在實作 <a href="https://en.wikipedia.org/wiki/Content_management_system">CMS（Content Management System）</a>時，對於儲存文章內部的圖片時，常常很直觀的透過 JavaScript 在前端將其轉成 base64 編碼之後，與文章本文一起變成一巨大字串傳至後端後直接儲存在資料庫內，這樣的會嚴重的造成效能上的問題，首先是無法進行 <a href="https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video">lazy loading</a>，其次是會使得 api request 封包非常巨大，需要花非常多時間下載，造成使用者等待時間較長，在這樣的狀況下，若是只能調校前端使其效能能夠提升上去，我們可以從壓縮圖片著手，將圖片壓縮之後，api request 容量減少，可以有效的提升下載效率與畫面渲染時間，提升使用者體驗。</p>
+
+<!-- more -->
+
+
+<p>以下是一個簡單透過 canvas 來進行圖片壓縮的方法。</p>
+
+<p>首先，加入一個我們工作的 canvas tag，這個 canvas 可見與不可見(<code>display: none</code>)皆行，視情形調整是否需要顯示給使用者檢視，並加上一個需要使用者上傳的 input tag，我們會需要一個 image tag 用來暫存使用者上傳的檔案，一樣，這個 image tag 也可以設定為使用者不可見。</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;&quot;</span> <span class="na">class=</span><span class="s">&quot;before&quot;</span> <span class="na">style=</span><span class="s">&quot;display: none&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;file&quot;</span> <span class="na">name=</span><span class="s">&quot;upload-image&quot;</span> <span class="na">id=</span><span class="s">&quot;upload-image&quot;</span> <span class="na">required</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;canvas</span> <span class="na">style=</span><span class="s">&quot;display: none&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
+
+
+<p>我們需要針對這個 input tag 進行事件的設定，當有檔案被上傳之後，我們會將其用 <a href="https://en.wikipedia.org/wiki/Base64">Base64</a> 的方式寫入 canvas 裡面，並將其壓縮成其他不同的格式，下面我們示範轉換成 <a href="https://developers.google.com/speed/webp">WebP 格式</a>，你可以視需求轉換成你所需要的格式。</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;input[name=upload-image]&quot;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">ReadAndCompress</span><span class="p">(</span><span class="nx">event</span><span class="p">));</span></code></pre></div>
+
+
+<p>注意到我們上面呼叫了另外一個 <code>function ReadAndCompress</code> 並將 event 傳入，我們在另外一個地方定義了此 function，透過 <code>FileReader</code> 這個內建的檔案讀取 <code>class</code> 將檔案讀出之後，將並將其寫入 canvas 內，並將整個 canvas 的內容透過 canvas 的內容轉成我們所想要的檔案格式，這邊我們轉成 WebP。</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">ReadAndCompress</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">Before</span> <span class="nx">Compression</span><span class="o">:</span> <span class="nx">$</span><span class="p">{(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span><span class="o">/</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="mi">1024</span><span class="p">)).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">)}</span> <span class="nx">MB</span><span class="err">`</span><span class="p">);</span></code></pre></div>
+
+
+<p>首先透過 <code>e.target.files[0].size</code> 可以取得檔案的大小（注意單位為 K)，我們先把它印出來作為壓縮前的大小對照。</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FileReader</span><span class="p">();</span>
+ <span class="nx">reader</span><span class="p">.</span><span class="nx">readAsDataURL</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></code></pre></div>
+
+
+<p>新增一個 FileReader 並指定檔案以 Base64 的方式讀取。</p>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">reader</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;img.before&quot;</span><span class="p">);</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">result</span><span class="p">;</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">height</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">elem</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">);</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">width</span><span class="p">;</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">height</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+      <span class="nx">ctx</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+      <span class="kr">const</span> <span class="nx">webp</span> <span class="o">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">toDataURL</span><span class="p">(</span><span class="s2">&quot;image/webp&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span></code></pre></div>
+
+
+<p>接著我們新增一個 onload 事件，並在確定 loading 結束之後，將圖片寫進 image tag 裡面，這時候，圖片會以剛剛提到的 Base64 格式寫入，並在這個圖片的 onload 事件被觸發，也就是已經確定載入完成之後，我們可以將這張圖片寫入 canvas 來進行壓縮，為了確保壓縮的圖片大小仍舊與原本圖片相同，我們 canvas tag 本身不設定寬高，寬高在圖片載入後設定上去，我們可以使用 <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage"><code>drawImage</code></a> 函式將 Base64 圖片直接寫入 canvas 裡面，之後，我們就能透過 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL"><code>ctx.canvas.toDataURL</code></a> 函式將 canvas 的內容轉成 Base64 輸出，<code>toDataURL</code> 的格式如下： <code>toDataURL(type, option)</code> ，一般 <code>option</code> 即是輸出品質，在 <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL">MDN</a> 上有提到預設 type 為 png ，若是選定的格式在這個瀏覽器上不支援的話，輸出則會自動變為 png，以上就是一個簡單的利用前端來壓縮圖片的小技巧，下面是整個範例 code，提供參考。</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+<span class="nt">&lt;html&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;file&quot;</span> <span class="na">name=</span><span class="s">&quot;upload-image&quot;</span> <span class="na">id=</span><span class="s">&quot;upload-image&quot;</span> <span class="na">required</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">name=</span><span class="s">&quot;before-compression&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+    <span class="nt">&lt;p</span> <span class="na">name=</span><span class="s">&quot;after-compression&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;&quot;</span> <span class="na">class=</span><span class="s">&quot;before&quot;</span> <span class="na">style=</span><span class="s">&quot;display:none;&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;canvas</span> <span class="na">style=</span><span class="s">&quot;display: none;&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;&quot;</span> <span class="na">class=</span><span class="s">&quot;after&quot;</span> <span class="na">style=</span><span class="s">&quot;display:none;&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;./index.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+
+
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">ReadAndCompress</span> <span class="o">=</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">size</span> <span class="o">=</span> <span class="err">`</span><span class="nx">Before</span> <span class="nx">Compression</span><span class="o">:</span> <span class="nx">$</span><span class="p">{(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">size</span><span class="o">/</span><span class="p">(</span><span class="mi">1000</span><span class="o">*</span><span class="mi">1024</span><span class="p">)).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">)}</span> <span class="nx">MB</span><span class="err">`</span><span class="p">;</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;p[name=before-compression]&quot;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="nx">size</span><span class="p">;</span>
+  <span class="kr">const</span> <span class="nx">reader</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FileReader</span><span class="p">();</span>
+  <span class="nx">reader</span><span class="p">.</span><span class="nx">readAsDataURL</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+
+  <span class="nx">reader</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="nx">event</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">img</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;img.before&quot;</span><span class="p">);</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">.</span><span class="nx">result</span><span class="p">;</span>
+    <span class="c1">//img.style = &quot;display: true&quot;;</span>
+    <span class="nx">img</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="kr">const</span> <span class="nx">width</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">width</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">height</span> <span class="o">=</span> <span class="nx">img</span><span class="p">.</span><span class="nx">height</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">elem</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;canvas&#39;</span><span class="p">);</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">width</span> <span class="o">=</span> <span class="nx">width</span><span class="p">;</span>
+      <span class="nx">elem</span><span class="p">.</span><span class="nx">height</span> <span class="o">=</span> <span class="nx">height</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">ctx</span> <span class="o">=</span> <span class="nx">elem</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+      <span class="nx">ctx</span><span class="p">.</span><span class="nx">drawImage</span><span class="p">(</span><span class="nx">img</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span><span class="p">);</span>
+      <span class="kr">const</span> <span class="nx">webp</span> <span class="o">=</span> <span class="nx">ctx</span><span class="p">.</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">toDataURL</span><span class="p">(</span><span class="s2">&quot;image/webp&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+      <span class="kr">const</span> <span class="nx">imgAfter</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;img.after&quot;</span><span class="p">);</span>
+      <span class="nx">imgAfter</span><span class="p">.</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">webp</span><span class="p">;</span>
+      <span class="c1">//imgAfter.style = &quot;display: true&quot;;</span>
+      <span class="kr">const</span> <span class="nx">head</span> <span class="o">=</span> <span class="s1">&#39;data:image/webp;base64,&#39;</span><span class="p">;</span>
+      <span class="kr">const</span> <span class="nx">imgFileSize</span> <span class="o">=</span> <span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">((</span><span class="nx">webp</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">head</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span><span class="o">*</span><span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1000</span><span class="p">)).</span><span class="nx">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+      <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;p[name=after-compression]&quot;</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span>
+        <span class="err">`</span><span class="nx">After</span> <span class="nx">Compression</span><span class="o">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">imgFileSize</span><span class="p">}</span> <span class="nx">KB</span><span class="err">`</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">reader</span><span class="p">.</span><span class="nx">onerror</span> <span class="o">=</span> <span class="nx">error</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">error</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s2">&quot;input[name=upload-image]&quot;</span><span class="p">)</span>
+<span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s2">&quot;change&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">ReadAndCompress</span><span class="p">(</span><span class="nx">event</span><span class="p">));</span></code></pre></div>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ruby 2.7 新發布，新功能說明]]></title>

@@ -46,6 +46,29 @@
 		
 	
 	<header class="post-header">
+		<span class="post-meta">17 Jan 2020</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2020/01/17/li-yong-canvas-jin-xing-qian-duan-tu-pian-ya-suo/">
+			
+				利用 Canvas 進行前端圖片壓縮</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>最近工作上剛好遇到一個需要調校效能的站，在過程中我們運用了許多不同的方法將整體的營運效能往上大幅度的提升，在未來幾篇文章我會討論有關如何提升前端效能的方法，雖然都有些老生常談，但是希望可以給初學者一些方向，當網站效能需要最佳化時可以想到這些方法。</p>
+
+<p>許多人在實作 <a href="https://en.wikipedia.org/wiki/Content_management_system">CMS（Content Management System）</a>時，對於儲存文章內部的圖片時，常常很直觀的透過 JavaScript 在前端將其轉成 base64 編碼之後，與文章本文一起變成一巨大字串傳至後端後直接儲存在資料庫內，這樣的會嚴重的造成效能上的問題，首先是無法進行 <a href="https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video">lazy loading</a>，其次是會使得 api request 封包非常巨大，需要花非常多時間下載，造成使用者等待時間較長，在這樣的狀況下，若是只能調校前端使其效能能夠提升上去，我們可以從壓縮圖片著手，將圖片壓縮之後，api request 容量減少，可以有效的提升下載效率與畫面渲染時間，提升使用者體驗。</p>
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
 		<span class="post-meta">27 Dec 2019</span>
 		<h2 class="post-title">
 			
@@ -321,7 +344,7 @@
 
 
 
-<section class="copyright">All content copyright <a href="/">Dylandy</a> © 2019 • All rights reserved.</section>
+<section class="copyright">All content copyright <a href="/">Dylandy</a> © 2020 • All rights reserved.</section>
 
 <section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
 
