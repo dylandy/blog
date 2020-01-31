@@ -66,6 +66,14 @@ reader.onload = event => {
 
 接著我們新增一個 onload 事件，並在確定 loading 結束之後，將圖片寫進 image tag 裡面，這時候，圖片會以剛剛提到的 Base64 格式寫入，並在這個圖片的 onload 事件被觸發，也就是已經確定載入完成之後，我們可以將這張圖片寫入 canvas 來進行壓縮，為了確保壓縮的圖片大小仍舊與原本圖片相同，我們 canvas tag 本身不設定寬高，寬高在圖片載入後設定上去，我們可以使用 [`drawImage`](https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage) 函式將 Base64 圖片直接寫入 canvas 裡面，之後，我們就能透過 [`ctx.canvas.toDataURL`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL) 函式將 canvas 的內容轉成 Base64 輸出，`toDataURL` 的格式如下： `toDataURL(type, option)` ，一般 `option` 即是輸出品質，在 [MDN](https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL) 上有提到預設 type 為 png ，若是選定的格式在這個瀏覽器上不支援的話，輸出則會自動變為 png，以上就是一個簡單的利用前端來壓縮圖片的小技巧，下面是整個範例 code，提供參考。
 
+
+<p class="codepen" data-height="265" data-theme-id="dark" data-default-tab="js,result" data-user="dylandy" data-slug-hash="YzPovQz" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Frontend Image Compress">
+  <span>See the Pen <a href="https://codepen.io/dylandy/pen/YzPovQz">
+  Frontend Image Compress</a> by dylandy.chang (<a href="https://codepen.io/dylandy">@dylandy</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+
 {% highlight html %}
 <!doctype html>
 <html>
