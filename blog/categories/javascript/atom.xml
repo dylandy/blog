@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javascript | Dylandy's Murmur]]></title>
   <link href="http://blog.dylandy.tw//blog/categories/javascript/atom.xml" rel="self"/>
   <link href="http://blog.dylandy.tw//"/>
-  <updated>2020-01-31T22:41:16+08:00</updated>
+  <updated>2020-02-08T15:59:34+08:00</updated>
   <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
@@ -123,6 +123,74 @@
 
 <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">input</span><span class="p">[</span><span class="nx">name</span><span class="o">=</span><span class="nx">upload</span><span class="o">-</span><span class="nx">image</span><span class="p">]</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;)</span>
 <span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">ldquo</span><span class="p">;</span><span class="nx">change</span><span class="o">&amp;</span><span class="nx">rdquo</span><span class="p">;,</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">ReadAndCompress</span><span class="p">(</span><span class="nx">event</span><span class="p">));</span></code></pre></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JavaScript Event Loop - <br><small>為什麼你應該了解它（一）</small>]]></title>
+    <link href="http://blog.dylandy.tw//blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun/"/>
+    <updated>2019-12-26T15:28:23+08:00</updated>
+    <id>http://blog.dylandy.tw//blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun</id>
+    <content type="html"><![CDATA[<p>最近在工作上面頻繁的使用 Node.js，雖然以前在開發前端有使用 JavaScript 的經驗，但是對於 JavaScript 的一些特性在這幾年中仍是不求甚解的，對於 JavaScript 的<a href="https://www.google.com/search?q=javascript+what+the+fuck&amp;client=firefox-b-d&amp;sxsrf=ACYBGNRxxqeZNR62CPMhSK4QvPbxv6xMOg:1578734050768&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ved=2ahUKEwiJvanSmvvmAhVAx4sBHUgvCqAQ_AUoAXoECAsQAw&amp;biw=1280&amp;bih=703&amp;dpr=2">一些奇怪的行為</a>，總是用其他語言的想法來思考最後總是無奈的 workaround，前一段時間，花了一點空閒時間稍微了解了一下 JavaScript 底層到底做了什麼，這篇文章將討論 JavaScript 底層最重要的機制之一 Event Loop 的流程如何影響到 JavaScript 的執行行為。</p>
+
+<p>相信很多人在剛開始接觸 JavaScript 的時候，對於異步行為是非常陌生與困惑的，到底為什麼一個號稱<a href="https://dev.to/steelvoltage/if-javascript-is-single-threaded-how-is-it-asynchronous-56gd">「單執行緒」</a>的程式與語言，能夠以不卡住主執行緒的方式來執行，對於其他程式語言的使用者來說，這是非常不合理的行為，到底 JavaScript 的底層是怎麼處理這樣的行為呢？</p>
+
+<p>首先，讓我們先看一下下面這段 code。</p>
+
+<pre><code class="js">console.log("before time out");
+setTimeout(() =&gt; { console.log("hello") }, 0);
+console.log("after time out");
+</code></pre>
+
+<p>讓我們來作個小測驗吧，以上的程式碼的執行結果如何呢？</p>
+
+<div name="first_ans" style="background: #ebebeb; display: flex; padding: 1em; margin-bottom: 10px; justify-content: space-around; cursor: pointer">
+  <code style="display: inline-flex; background: none; border: 0">
+    => before time out<br>
+    => hello<br>
+    => after timeout
+  </code>
+</div>
+
+
+<div name="second_ans" style="background: #ebebeb; display: flex; padding: 1em; justify-content: space-around; cursor: pointer">
+  <code style="display: inline-flex; background: none; border: 0" >
+    => before time out<br>
+    => after time out<br>
+    => hello
+  </code>
+</div>
+
+
+
+
+<script>
+  // simple quiz
+  const first_ans = document.querySelector("div[name=first_ans]");
+  const second_ans = document.querySelector("div[name=second_ans]");
+  first_ans.addEventListener("click", (e) => {
+    first_ans.style.backgroundColor = "#d9534f";
+    second_ans.style.backgroundColor = "#ebebeb";
+  });
+  second_ans.addEventListener("click", (e) => {
+    first_ans.style.backgroundColor = "#ebebeb";
+    second_ans.style.backgroundColor = "#5cb85c";
+  });
+</script>
+
+
+
+
+<!-- more -->
+
+
+<p>你答對了嗎？如果是對於 JavaScript 不太熟的朋友，這邊幫你解釋一下上面的程式片段。<a href="https://developer.mozilla.org/en-US/docs/Web/API/Console/log"><code>console.log</code></a> 是 JavaScript 中內建的將文字印在終端機上的功能，若是在瀏覽器上，則會將文字印在 debug 工具裡，而 <a href="https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout"><code>setTimeout</code></a> 則是在 JavaScript 中的一個內建 timer ，它可以設定一個定時器（以 ms 為單位），並在時間結束之後執行所傳入的 lambda function，因此，上面的範例片段中的 <code>setTimeout</code> 片段 <code>setTimeout(() =&gt; console.log("hello"), 0)</code> 意味著「在 0ms 之後，至終端機上印出 &ldquo;hello&rdquo; 字串」</p>
+
+<p>對於從其他同步行為語言出身的人來說，直覺的會想說是第一個選項是很正常的，像是 JavaScript 這樣的執行行為，在前面跟我們說了這是「單執行緒」的程式語言來說，會覺得非常奇怪，因為同步行為語言來說，第二個選項的行為幾乎都是建立在多執行緒的條件下才能完成。嚴格來說，這樣的想法，也沒有錯啦，只是這個多執行緒發生的地點有所不同，下面就讓我試著解釋看看了。</p>
+
+<p>JavaScript 是個 <a href="https://en.wikipedia.org/wiki/Just-in-time_compilation">JIT</a> 的程式語言，程式語言在執行的時候會先編譯過後，將原始碼轉譯成執行環境可以執行的中介碼，並由執行環境所執行的行為，而這個執行環境一般我們稱為<a href="https://en.wikipedia.org/wiki/Virtual_machine#Process_virtual_machines">程式虛擬機器</a>。在虛擬機器裡面，程式語言的開發者可以透過許多不同的機制來達到他們所想要程式語言特性，可以是透過最佳化演算法來提昇效能，也可以像是 JavaScript 一樣使用 Event Loop 來提供非同步的行為。</p>
+
+<p>下一集我們將會開始討論 Event Loop 的詳細執行情形，還請敬請期待。</p>
 ]]></content>
   </entry>
   
