@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ruby | Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw/blog/blog/categories/ruby/atom.xml" rel="self"/>
-  <link href="http://blog.dylandy.tw/blog/"/>
-  <updated>2024-10-11T17:42:18+08:00</updated>
-  <id>http://blog.dylandy.tw/blog/</id>
+  <link href="http://blog.dylandy.tw//blog/categories/ruby/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw//"/>
+  <updated>2024-10-11T17:50:07+08:00</updated>
+  <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ruby 2.7 新發布，新功能說明]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni/"/>
+    <link href="http://blog.dylandy.tw//blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni/"/>
     <updated>2019-12-27T13:37:22+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni</id>
+    <id>http://blog.dylandy.tw//blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni</id>
     <content type="html"><![CDATA[<p>就如往常，Matz 選在聖誕節發布 Ruby 2.7 作為聖誕禮物，那麼這個新版本有什麼特別的呢？又有什麼是未來整個 Ruby 社群的方向呢？</p>
 
 <p>Ruby 2.7 的新功能列表</p>
@@ -205,9 +205,9 @@ m(key: 42) #=&gt; [{}, 42]
   
   <entry>
     <title type="html"><![CDATA[使用 inotify 進行資料夾監控]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2018/06/23/shi-yong-inotify-jin-xing-zi-liao-jia-jian-kong/"/>
+    <link href="http://blog.dylandy.tw//blog/2018/06/23/shi-yong-inotify-jin-xing-zi-liao-jia-jian-kong/"/>
     <updated>2018-06-23T14:04:20+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2018/06/23/shi-yong-inotify-jin-xing-zi-liao-jia-jian-kong</id>
+    <id>http://blog.dylandy.tw//blog/2018/06/23/shi-yong-inotify-jin-xing-zi-liao-jia-jian-kong</id>
     <content type="html"><![CDATA[<p>在撰寫系統時，要監視一個資料夾的變化情形，我們常會寫一個小程式跑一個無限迴圈，隨時監視目標資料夾的狀態，但是這樣的程式不僅浪費系統資源，佔用珍貴的 CPU 時間、對於硬碟 IO 的使用率提昇，也會因為這個程式佔用有限的硬碟頻寬，下面是一個使用無限迴圈實作的簡單資料夾監視程式。</p>
 
 <pre><code class="sh">while true
@@ -247,9 +247,9 @@ notifier.run
   
   <entry>
     <title type="html"><![CDATA[將你的程式 Daemon 化]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/"/>
+    <link href="http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/"/>
     <updated>2017-12-18T21:21:00+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua</id>
+    <id>http://blog.dylandy.tw//blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua</id>
     <content type="html"><![CDATA[<p>實務上我們常常會希望可以在離開 terminal 的狀況下，程式仍舊持續得執行，有些比較小、比較不需要在意系統資源耗費的程式，我們常可以看到用一些奇怪的手法來達到類似的效果，像是使用 screen 或是 tmux 來將程式跑在背景中，這樣下次登入的時候程式仍舊能夠可以被叫出來，雖然看似方便，但是仍然存在許多問題，例如 tmux 和 screen 所需的記憶體不少，且我們的程式相依於 screen 或 tmux ，當 screen 或 tmux 有任何不可預期的狀況 process 被 kill 掉了的話，我們的程式也會被連帶的受到波及，因此完全獨立的背景執行勢必是需要我們追尋的目標，以下是最近工作上簡單 survey 後的一些有關於如何 Daemon 化程式進行簡單的整理。</p>
 
 <p>本文章主要知識來源於 <a href="https://www.jstorimer.com/blogs/workingwithcode/7766093-daemon-processes-in-ruby">Daemon Processes in Ruby</a> 的教導，希望能夠用較易理解的文字呈現出來。在寫 Daemon 之前，讓我們回頭看看一個知名的 daemonize web server 程式 <a href="https://github.com/rack/rack">rack</a>。我們來看看他將目標 web server daemon 化的程式碼片段，讓我們透過這個程式碼片段來看看是否能夠從中學到如何 daemon 一支程式。</p>
@@ -378,9 +378,9 @@ STDERR.reopen "/dev/null", "a"
   
   <entry>
     <title type="html"><![CDATA[Ruby Web Framework : 觀察與概念]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2016/04/06/ruby-web-framework-xue-xi/"/>
+    <link href="http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi/"/>
     <updated>2016-04-06T00:00:00+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2016/04/06/ruby-web-framework-xue-xi</id>
+    <id>http://blog.dylandy.tw//blog/2016/04/06/ruby-web-framework-xue-xi</id>
     <content type="html"><![CDATA[<p><br></p>
 
 <h3>緣起</h3>

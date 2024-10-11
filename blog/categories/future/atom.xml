@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: future | Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw/blog/blog/categories/future/atom.xml" rel="self"/>
-  <link href="http://blog.dylandy.tw/blog/"/>
-  <updated>2024-10-11T17:42:18+08:00</updated>
-  <id>http://blog.dylandy.tw/blog/</id>
+  <link href="http://blog.dylandy.tw//blog/categories/future/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw//"/>
+  <updated>2024-10-11T17:50:07+08:00</updated>
+  <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ruby 2.7 新發布，新功能說明]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni/"/>
+    <link href="http://blog.dylandy.tw//blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni/"/>
     <updated>2019-12-27T13:37:22+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni</id>
+    <id>http://blog.dylandy.tw//blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni</id>
     <content type="html"><![CDATA[<p>就如往常，Matz 選在聖誕節發布 Ruby 2.7 作為聖誕禮物，那麼這個新版本有什麼特別的呢？又有什麼是未來整個 Ruby 社群的方向呢？</p>
 
 <p>Ruby 2.7 的新功能列表</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: vm | Dylandy's Murmur]]></title>
-  <link href="http://blog.dylandy.tw/blog/blog/categories/vm/atom.xml" rel="self"/>
-  <link href="http://blog.dylandy.tw/blog/"/>
-  <updated>2024-10-11T17:42:18+08:00</updated>
-  <id>http://blog.dylandy.tw/blog/</id>
+  <link href="http://blog.dylandy.tw//blog/categories/vm/atom.xml" rel="self"/>
+  <link href="http://blog.dylandy.tw//"/>
+  <updated>2024-10-11T17:50:07+08:00</updated>
+  <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JavaScript Event Loop - <br><small>為什麼你應該了解它（一）</small>]]></title>
-    <link href="http://blog.dylandy.tw/blog/blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun/"/>
+    <link href="http://blog.dylandy.tw//blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun/"/>
     <updated>2019-12-26T15:28:23+08:00</updated>
-    <id>http://blog.dylandy.tw/blog/blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun</id>
+    <id>http://blog.dylandy.tw//blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun</id>
     <content type="html"><![CDATA[<p>最近在工作上面頻繁的使用 Node.js，雖然以前在開發前端有使用 JavaScript 的經驗，但是對於 JavaScript 的一些特性在這幾年中仍是不求甚解的，對於 JavaScript 的<a href="https://www.google.com/search?q=javascript+what+the+fuck&amp;client=firefox-b-d&amp;sxsrf=ACYBGNRxxqeZNR62CPMhSK4QvPbxv6xMOg:1578734050768&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ved=2ahUKEwiJvanSmvvmAhVAx4sBHUgvCqAQ_AUoAXoECAsQAw&amp;biw=1280&amp;bih=703&amp;dpr=2">一些奇怪的行為</a>，總是用其他語言的想法來思考最後總是無奈的 workaround，前一段時間，花了一點空閒時間稍微了解了一下 JavaScript 底層到底做了什麼，這篇文章將討論 JavaScript 底層最重要的機制之一 Event Loop 的流程如何影響到 JavaScript 的執行行為。</p>
 
 <p>相信很多人在剛開始接觸 JavaScript 的時候，對於異步行為是非常陌生與困惑的，到底為什麼一個號稱<a href="https://dev.to/steelvoltage/if-javascript-is-single-threaded-how-is-it-asynchronous-56gd">「單執行緒」</a>的程式與語言，能夠以不卡住主執行緒的方式來執行，對於其他程式語言的使用者來說，這是非常不合理的行為，到底 JavaScript 的底層是怎麼處理這樣的行為呢？</p>
