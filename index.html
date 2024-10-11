@@ -1,1 +1,439 @@
-My Octopress Page is coming soon &hellip;
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8">
+	<title>Dylandy's Murmur</title>
+
+	<meta name="author" content="Dylandy">
+	
+	<meta name="description" content="Dylandy's blog">
+
+	<meta name="HandheldFriendly" content="True" />
+	<meta name="MobileOptimized" content="320" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/atom.xml" rel="alternate" title="Dylandy's Murmur" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic|Open+Sans:700,400" />
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/tomorrow.min.css" />
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+
+
+<body class="home-template">
+  <header id="site-head">
+  <div class="vertical">
+    <div id="site-head-content" class="inner">
+      <h1 class="blog-title"><a class="no-rollover" href="/">Dylandy's Murmur</a></h1>
+      <h2 class="blog-description">maybe some code and some lifestyle</h2>
+    </div>
+  </div>
+</header>
+  <main class="content" role="main">
+    
+
+
+
+  
+    <article class="post">
+      
+	
+		
+	
+	<header class="post-header">
+		<span class="post-meta">11 Oct 2024</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2024/10/11/long-time-no-see/">
+			
+				好久不見，重新回來</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>自從換了工作之後，部落格已經荒廢了好一陣子了。</p>
+
+<p>經過了幾年的奔波，年紀的虛度，或許沈澱下來重新面對自己，用文字把自己的生活和自己的成長和大家分享吧。看了下草稿目錄下有好多幾年前的欠稿，這幾年在不同領域的浮浮沈沈，或許應該要找個時間來把以前的這些稿給寫一寫了，在前公司工作的時候一直對於下班後沒時間閱讀和成長感到生氣，現在工作雖然下班後有了稍微多的時間，但因為工作時的精神壓力，讓我在之前選擇了下班後的逃避，或許是時候回頭拾起掉在地上的熱忱了。</p>
+
+<p>2024.10.11 基隆，吹著怡人的涼風的午後</p>
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">17 Jan 2020</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2020/01/17/li-yong-canvas-jin-xing-qian-duan-tu-pian-ya-suo/">
+			
+				利用 Canvas 進行前端圖片壓縮</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>最近工作上剛好遇到一個需要調校效能的站，在過程中我們運用了許多不同的方法將整體的營運效能往上大幅度的提升，在未來幾篇文章我會討論有關如何提升前端效能的方法，雖然都有些老生常談，但是希望可以給初學者一些方向，當網站效能需要最佳化時可以想到這些方法。</p>
+
+<p>許多人在實作 <a href="https://en.wikipedia.org/wiki/Content_management_system">CMS（Content Management System）</a>時，對於儲存文章內部的圖片時，常常很直觀的透過 JavaScript 在前端將其轉成 base64 編碼之後，與文章本文一起變成一巨大字串傳至後端後直接儲存在資料庫內，這樣的會嚴重的造成效能上的問題，首先是無法進行 <a href="https://developers.google.com/web/fundamentals/performance/lazy-loading-guidance/images-and-video">lazy loading</a>，其次是會使得 api request 封包非常巨大，需要花非常多時間下載，造成使用者等待時間較長，在這樣的狀況下，若是只能調校前端使其效能能夠提升上去，我們可以從壓縮圖片著手，將圖片壓縮之後，api request 容量減少，可以有效的提升下載效率與畫面渲染時間，提升使用者體驗。</p>
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">27 Dec 2019</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2019/12/27/ruby-2-dot-7-fa-bu-,you-shi-mo-zhi-de-wo-men-guan-zhu-de-di-fang-ni/">
+			
+				Ruby 2.7 新發布，新功能說明</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>就如往常，Matz 選在聖誕節發布 Ruby 2.7 作為聖誕禮物，那麼這個新版本有什麼特別的呢？又有什麼是未來整個 Ruby 社群的方向呢？</p>
+
+<p>Ruby 2.7 的新功能列表</p>
+
+<ol>
+<li><a href="#new-irb">IRB 多行模式與即時文件查閱</a></li>
+<li><a href="#array-intersection">Array#intersection</a></li>
+<li><a href="#tally">Enumerable#tally</a></li>
+<li><a href="#filter-map">Enumerable#filter_map</a></li>
+<li><a href="#produce">Enumerable#produce</a></li>
+<li><a href="#default-param">Block 預設參數名稱(實驗性)</a></li>
+<li><a href="#pattern-matching">Pattern Matching(實驗性)</a></li>
+<li><a href="#compaction-gc">Compaction GC</a></li>
+<li><a href="#keyword-argument">Keyword Argument</a></li>
+</ol>
+
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">26 Dec 2019</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2019/12/26/javascript-event-loop-jian-dan-tao-lun/">
+			
+				JavaScript Event Loop - <br><small>為什麼你應該了解它（一）</small></a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>最近在工作上面頻繁的使用 Node.js，雖然以前在開發前端有使用 JavaScript 的經驗，但是對於 JavaScript 的一些特性在這幾年中仍是不求甚解的，對於 JavaScript 的<a href="https://www.google.com/search?q=javascript+what+the+fuck&amp;client=firefox-b-d&amp;sxsrf=ACYBGNRxxqeZNR62CPMhSK4QvPbxv6xMOg:1578734050768&amp;source=lnms&amp;tbm=isch&amp;sa=X&amp;ved=2ahUKEwiJvanSmvvmAhVAx4sBHUgvCqAQ_AUoAXoECAsQAw&amp;biw=1280&amp;bih=703&amp;dpr=2">一些奇怪的行為</a>，總是用其他語言的想法來思考最後總是無奈的 workaround，前一段時間，花了一點空閒時間稍微了解了一下 JavaScript 底層到底做了什麼，這篇文章將討論 JavaScript 底層最重要的機制之一 Event Loop 的流程如何影響到 JavaScript 的執行行為。</p>
+
+<p>相信很多人在剛開始接觸 JavaScript 的時候，對於異步行為是非常陌生與困惑的，到底為什麼一個號稱<a href="https://dev.to/steelvoltage/if-javascript-is-single-threaded-how-is-it-asynchronous-56gd">「單執行緒」</a>的程式與語言，能夠以不卡住主執行緒的方式來執行，對於其他程式語言的使用者來說，這是非常不合理的行為，到底 JavaScript 的底層是怎麼處理這樣的行為呢？</p>
+
+<p>首先，讓我們先看一下下面這段 code。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='js'><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;before time out&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="nx">setTimeout</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span> <span class="p">},</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;after time out&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>讓我們來作個小測驗吧，以上的程式碼的執行結果如何呢？</p>
+
+<div name="first_ans" style="background: #ebebeb; display: flex; padding: 1em; margin-bottom: 10px; justify-content: space-around; cursor: pointer">
+  <code style="display: inline-flex; background: none; border: 0">
+    => before time out<br>
+    => hello<br>
+    => after timeout
+  </code>
+</div>
+
+
+<div name="second_ans" style="background: #ebebeb; display: flex; padding: 1em; justify-content: space-around; cursor: pointer">
+  <code style="display: inline-flex; background: none; border: 0" >
+    => before time out<br>
+    => after time out<br>
+    => hello
+  </code>
+</div>
+
+
+
+
+<script>
+  // simple quiz
+  const first_ans = document.querySelector("div[name=first_ans]");
+  const second_ans = document.querySelector("div[name=second_ans]");
+  first_ans.addEventListener("click", (e) => {
+    first_ans.style.backgroundColor = "#d9534f";
+    second_ans.style.backgroundColor = "#ebebeb";
+  });
+  second_ans.addEventListener("click", (e) => {
+    first_ans.style.backgroundColor = "#ebebeb";
+    second_ans.style.backgroundColor = "#5cb85c";
+  });
+</script>
+
+
+
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">14 Apr 2019</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2019/04/14/shi-ji-huo-ji-heng-chun-ya-rou-dong-fen/">
+			
+				恆春食記-夥計鴨肉冬粉</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>在多風的國境之南，冬粉是這邊的一項特產之一，又因為貧瘠的土地，使得畜牧業蓬勃發展，在屏東南邊的大地上，羊、牛、鹿、雞、鴨、鵝…等，都是常見的養殖選項，這樣的碰撞之下，鴨肉冬粉的出現，著實在意料之中。</p>
+
+<p>湯頭帶著鴨骨自然的鮮味，卻不會有鴨肉的腥騷味，我們知道，不論是什麼樣的動物騷味皆是來自氧化的脂肪組織，因此越新鮮的處理，味道越甜美。米粉在剛上桌前因為還沒吸飽湯汁，略顯平淡，這時可以吃吃看他們的小菜，用煙燻的方式處理的小菜非常令人驚艷，尤其推薦海帶與百葉豆腐，薄薄的煙燻味與濃厚的滷汁調和，使得口感更顯精緻，但另一方面，或許是煙燻的時間不易控制，雞腿幾乎是絲狀的質地呈現，失去了雞腿應有的多汁與細膩，實在非常可惜。</p>
+
+<p>推薦給你，恆春夥計鴨肉冬粉。</p>
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">23 Jun 2018</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2018/06/23/shi-yong-inotify-jin-xing-zi-liao-jia-jian-kong/">
+			
+				使用 Inotify 進行資料夾監控</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>在撰寫系統時，要監視一個資料夾的變化情形，我們常會寫一個小程式跑一個無限迴圈，隨時監視目標資料夾的狀態，但是這樣的程式不僅浪費系統資源，佔用珍貴的 CPU 時間、對於硬碟 IO 的使用率提昇，也會因為這個程式佔用有限的硬碟頻寬，下面是一個使用無限迴圈實作的簡單資料夾監視程式。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="k">while</span> <span class="nb">true</span>
+</span><span class='line'><span class="k">do</span>
+</span><span class='line'>  <span class="nv">PASS</span><span class="o">=</span><span class="s2">&quot;$(ls -la | wc -l)&quot;</span>
+</span><span class='line'>  sleep 5
+</span><span class='line'>  <span class="nv">CURRENT</span><span class="o">=</span><span class="s2">&quot;$(ls -la | wc -l)&quot;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nb">test</span> <span class="k">${</span><span class="nv">CURRENT</span><span class="k">}</span> -gt  <span class="k">${</span><span class="nv">PASS</span><span class="k">}</span><span class="p">;</span> <span class="k">then</span>
+</span><span class='line'>    <span class="nb">echo</span> <span class="s2">&quot;file has been added&quot;</span>
+</span><span class='line'>  <span class="k">fi</span>
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">18 Dec 2017</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2017/12/18/jiang-ni-de-cheng-shi-daemon-hua/">
+			
+				將你的程式 Daemon 化</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>實務上我們常常會希望可以在離開 terminal 的狀況下，程式仍舊持續得執行，有些比較小、比較不需要在意系統資源耗費的程式，我們常可以看到用一些奇怪的手法來達到類似的效果，像是使用 screen 或是 tmux 來將程式跑在背景中，這樣下次登入的時候程式仍舊能夠可以被叫出來，雖然看似方便，但是仍然存在許多問題，例如 tmux 和 screen 所需的記憶體不少，且我們的程式相依於 screen 或 tmux ，當 screen 或 tmux 有任何不可預期的狀況 process 被 kill 掉了的話，我們的程式也會被連帶的受到波及，因此完全獨立的背景執行勢必是需要我們追尋的目標，以下是最近工作上簡單 survey 後的一些有關於如何 Daemon 化程式進行簡單的整理。</p>
+
+<p>本文章主要知識來源於 <a href="https://www.jstorimer.com/blogs/workingwithcode/7766093-daemon-processes-in-ruby">Daemon Processes in Ruby</a> 的教導，希望能夠用較易理解的文字呈現出來。在寫 Daemon 之前，讓我們回頭看看一個知名的 daemonize web server 程式 <a href="https://github.com/rack/rack">rack</a>。我們來看看他將目標 web server daemon 化的程式碼片段，讓我們透過這個程式碼片段來看看是否能夠從中學到如何 daemon 一支程式。</p>
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">07 Oct 2017</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2017/10/07/tai-zhong-shi-ji-mian-wu-tian-zong/">
+			
+				台中食記-麵屋田宗</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>TL;DR 田宗的用心與水準真心不錯，有機會的話請一定要去吃吃看。</p>
+
+<p>本來想要在吃完的時候就來寫這篇食記了，在台灣吃過這麼多家拉麵店，麵屋田宗是第一家讓我感受到那種對拉麵的熱愛，那種狂熱與堅持，再再都是那麼的觸動我心。經過幾個禮拜的沈澱之後，我決定試著把我對於麵屋田宗的一些感想用我拙劣的文字描繪出來。</p>
+
+<p>因為求學的關係，之前在台北生活了七年的時間，身為一個台中人，在網路上看到任何有關於台中的消息總是會特別的關注，說來慚愧，因為在台北待的太久的關係，對於台中餐廳的認識並不比許多台北人來的高明，與田宗的邂逅也是在網路上看到一名廚師網友的大力推薦才初次耳聞，文中的那種英雄惜英雄讓我特別有帶入感，也讓我對於造訪田宗的旅程更是期待。</p>
+
+<p>或許是我來到店家的時間有點晚了，到達餐廳時已經臨界中午打烊，上一組客人帶著滿足的笑容與我擦身而過。推開木製的大門，醬油與味淋的清香撲面而來，或許是生活習慣的關係，對於醬油與味淋的味道感到特別的令人安心，有別於其他拉麵店總是會播放各種日本音樂，店內飄蕩著輕柔和緩的爵士樂，顯示出了店主心中小小的反動。</p>
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">06 Feb 2017</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2017/02/06/shi-yong-coffeescript-chan-sheng-ren-yi-duo-bian-xing/">
+			
+				身為一個程式設計師，或許我們可以為台灣的數學教育做點什麼</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>最近在練習 coffeescript 的時候，一直想要寫個小東西來玩玩，昨天晚上在回家的路上一邊騎車一邊想到，未來的世界、未來的教育，或許我們這些程式設計師都有參與的責任，或許編寫一些對於教育有關的程式也會是我往後的一個目標吧。帶著這樣的想法，開始思考著最近在網路上看到的影片</p>
+
+<iframe src="https://embed.ted.com/talks/conrad_wolfram_teaching_kids_real_math_with_computers" width="640" height="360" frameborder="0" scrolling="no" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+
+
+<p>現在已經是資訊化的時代了，過去我們苦心積慮的想要讓孩子們學好算數，可以用紙筆進行高難度的運算，但是這些運算，在電腦普及、智慧型手機人手一支的現代，或許值得我們重新思考，我們學習數學運算的目的是什麼呢？這些能力能夠讓我們在數學成就上面得到什麼發展嗎？是不是這些能力讓我們在過往的學習路途上扼殺了許多可能的數學天才呢？我們是不是又因為一個人有著不錯的數學計算能力，就理所當然的認為他有數學天份呢？這些問題應該是進入了資訊化社會以後的我們，不論是不是老師，我想我們都應該問自己這樣的問題。我們能不能改變什麼，透過這些我們已經身在其中的機器，幫助我們運算，是不是能夠幫助我們學習數學的過程中，能夠學習得更透撤，更有系統呢？</p>
+
+
+	</section>
+
+    </article>
+
+  
+    <article class="post">
+      
+	
+	<header class="post-header">
+		<span class="post-meta">20 May 2016</span>
+		<h2 class="post-title">
+			
+			<a href="/blog/2016/05/20/she-ding-public-key-jin-xing-ssh-lian-xian/">
+			
+				設定 Public Key 進行 SSH 連線</a>
+		</h2>
+	</header>
+	<section class="post-excerpt">
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;身為一個宅宅工程師，對於使用 ssh 連線登入遠端主機是家常便飯的事情，但是也常常會因為 ssh port 被一些惡意程式攻擊，導致主機的帳號密碼被猜到，從而被迫換機器或是全機重灌等等的悲劇。
+有些系統工程師為了避免這樣的風險，把 ssh port 從預設的 22 port 搬移到其他的 port 上，希望能夠躲過大部分的機器人掃描，並且要求使用者的密碼要足夠複雜，但是相對於這些方法，使用 public key 來登入 ssh 主機似乎是最安全的作法，首先，足夠長度的 key length 能夠有效防止攻擊者的攻擊，並且以目前的科技與已知的演算法，並沒有有效的方法進行 key 破解，<a href="https://en.wikipedia.org/wiki/Integer_factorization">畢竟 key 的拆解</a>是一個 <a href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard 的問題</a>，因此能夠使用 public key 來進行連線登入的話是一個較為安全的連線方法。</p>
+
+
+	</section>
+
+    </article>
+
+
+<nav class="pagination" role="pagination">
+  
+
+  <span class="page-number">
+    Page 1 of 2
+  </span>
+
+  
+    <a class="older-posts"
+        href="/2">
+      Older Posts →
+    </a>
+  
+</nav>
+
+
+  </main>
+  <footer class="site-footer"><a class="subscribe icon-feed" href="http://blog.dylandy.tw/blog/atom.xml"><span class="tooltip">Subscribe!</span></a>
+
+
+<div class="inner">
+
+
+
+
+
+
+
+
+
+<section class="copyright">All content copyright <a href="/">Dylandy</a> © 2024 • All rights reserved.</section>
+
+<section class="poweredby">Casper theme by <a class="icon-ghost" href="http://tryghost.org">Ghost</a> &amp; Published with <a href="http://octopress.org">Octopress</a></section>
+
+</div>
+</footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'dylandysmurmur';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', "UA-74509063-1"]);
+    _gaq.push(['_setDomainName','dylandy.tw']);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+
+
+</body>
+</html>
