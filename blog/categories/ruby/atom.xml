@@ -257,8 +257,6 @@ notifier.run
 <!-- more -->
 
 
-
-
 <pre><code class="ruby">def daemonize_app
   if RUBY_VERSION &lt; "1.9"
     exit if fork

@@ -75,7 +75,11 @@
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 
+<<<<<<< HEAD
 <p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+=======
+<p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="ni">&amp;lt;</span>!doctype html&gt;
+>>>>>>> origin/gh-pages
 <span class="nt">&lt;html&gt;</span>
   <span class="nt">&lt;head&gt;</span>
   <span class="nt">&lt;/head&gt;</span>

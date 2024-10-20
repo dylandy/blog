@@ -67,8 +67,11 @@ notifier.run
 <!-- more -->
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/gh-pages
 <pre><code class="ruby">def daemonize_app
   if RUBY_VERSION &lt; "1.9"
     exit if fork
