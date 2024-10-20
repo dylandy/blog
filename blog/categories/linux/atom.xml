@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Dylandy's Murmur]]></title>
   <link href="http://blog.dylandy.tw//blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://blog.dylandy.tw//"/>
-  <updated>2024-10-11T17:50:07+08:00</updated>
+  <updated>2024-10-20T14:56:40+08:00</updated>
   <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
@@ -67,11 +67,8 @@ notifier.run
 <!-- more -->
 
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> origin/gh-pages
 <pre><code class="ruby">def daemonize_app
   if RUBY_VERSION &lt; "1.9"
     exit if fork

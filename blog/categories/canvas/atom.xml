@@ -4,7 +4,7 @@
   <title><![CDATA[Category: canvas | Dylandy's Murmur]]></title>
   <link href="http://blog.dylandy.tw//blog/categories/canvas/atom.xml" rel="self"/>
   <link href="http://blog.dylandy.tw//"/>
-  <updated>2024-10-11T17:50:07+08:00</updated>
+  <updated>2024-10-20T14:56:40+08:00</updated>
   <id>http://blog.dylandy.tw//</id>
   <author>
     <name><![CDATA[Dylandy]]></name>
@@ -75,11 +75,7 @@
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
 
-<<<<<<< HEAD
 <p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
-=======
-<p><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="ni">&amp;lt;</span>!doctype html&gt;
->>>>>>> origin/gh-pages
 <span class="nt">&lt;html&gt;</span>
   <span class="nt">&lt;head&gt;</span>
   <span class="nt">&lt;/head&gt;</span>
